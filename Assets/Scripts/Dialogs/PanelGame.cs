@@ -21,6 +21,10 @@ public class PanelGame : MonoBehaviour {
         OnHideKeyBoard ();
         show ();
     }
+    
+    void OnEnable() {
+    }
+
     void show () {
         isShow = true;
         this.gameObject.SetActive (true);

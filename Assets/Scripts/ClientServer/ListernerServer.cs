@@ -184,7 +184,6 @@ public class ListernerServer : IChatListener {
             for(int i = 0; i < totalTB; i++) {
                 TableItem ctb = new TableItem ();
                 ctb.id = (int) (message.reader ().ReadShort ());
-                Debug.Log ("dcmmmmmmmmmmm " + ctb.id);
                 ctb.status = (message.reader ().ReadByte ());
                 ctb.nUser = (message.reader ().ReadByte ());
                 sbyte ilock = message.reader ().ReadByte ();
@@ -636,6 +635,9 @@ public class ListernerServer : IChatListener {
             case GameID.POKER:
                 gameName = "Game Pocker";
                 break;
+            case GameID.XOCDIA:
+                gameName = "Game Xóc đĩa";
+                break;
         }
         if(BaseInfo.gI ().isNhanLoiMoiChoi) {// && !gameControl.dialogNapXu.isShow && !gameControl.dialogDoiThuong.isShow
             string m = "";
@@ -791,6 +793,10 @@ public class ListernerServer : IChatListener {
             case GameID.MAUBINH:
                 Card.setCardType (1);
                 BaseInfo.gI ().nameTale = "Mậu Binh";
+                break;
+            case GameID.XOCDIA:
+               // Card.setCardType(1);
+                BaseInfo.gI().nameTale = "Xóc Đĩa";
                 break;
             default:
                 break;

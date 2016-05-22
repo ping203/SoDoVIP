@@ -404,11 +404,10 @@ public class ProcessHandler : MessageHandler {
                         listenner.onChipToXu(message);
                         break;
                     case CMDClient.CMD_GETPHONECSKH:
-                        Debug.Log("Cham soc khach hang!!!!");
                         listenner.onPhoneCSKH(message);
                         break;
                     case CMDClient.CMD_9029_SODO:
-                        //listenner.onSMS9029 (message);
+                        listenner.onSMS9029 (message);
                         break;
                     case CMDClient.CMD_CARD_XEP_MB:
                         listenner.onCardXepMB (message);

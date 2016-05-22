@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PanelNapChuyenXu : PanelGame {
-    public PanelSMS panelSMS;
+    public PanelSMS9029 panelSMS;
     public UIToggle tgTheCao;
     public List<Item9029> list_viettel = new List<Item9029> ();
     public List<Item9029> list_vina = new List<Item9029> ();
@@ -41,13 +41,13 @@ public class PanelNapChuyenXu : PanelGame {
     }
 
     public void initPanelViettel () {
-        panelSMS.add9022 (list_viettel, 0);
+       // panelSMS.add9022 (list_viettel, 0);
     }
     public void initPanelVina () {
-        panelSMS.add9022 (list_vina, 1);
+      //  panelSMS.add9022 (list_vina, 1);
     }
     public void initPanelMobi () {
-        panelSMS.add9022 (list_mobi, 2);
+      //  panelSMS.add9022 (list_mobi, 2);
     }
     /*
     public void clickSMS9029(){

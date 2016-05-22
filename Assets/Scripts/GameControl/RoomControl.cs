@@ -9,7 +9,7 @@ public class RoomControl : StageControl {
     public static int roomType; // 1:Thuong, 2:VIP
     //public UIToggle vip;
     //public UIToggle thuong;
-    public List<TableBehavior> listTableBehavior = new List<TableBehavior> ();
+    public List<TableBehavior> listTableBehavior = new List<TableBehavior>();
 
     public UILabel lb_tengame;
 
@@ -25,33 +25,33 @@ public class RoomControl : StageControl {
 
     public bool anbanfull = true;
     // Use this for initialization
-    void Start () {
-        updateAvataName ();
-        setGameName ();
-       // setToggle ();
+    void Start() {
+        updateAvataName();
+        setGameName();
+        // setToggle ();
     }
-    void OnEnable () {
+    void OnEnable() {
         www = null;
         isSet = false;
         tg_anBanFull.value = anbanfull;
     }
     // Update is called once per frame
-    void Update () {
-        displayChip.text = BaseInfo.formatMoneyNormal (BaseInfo.gI ().mainInfo.moneyChip) + Res.MONEY_FREE;
+    void Update() {
+        displayChip.text = BaseInfo.formatMoneyNormal(BaseInfo.gI().mainInfo.moneyChip) + Res.MONEY_FREE;
         //displayXu.text = BaseInfo.formatMoneyNormal (BaseInfo.gI ().mainInfo.moneyXu) + Res.MONEY_VIP;
-        if(gameObject.activeInHierarchy && Input.GetKeyDown (KeyCode.Escape)) {
-            gameControl.disableAllDialog ();
-            onBack ();
+        if (gameObject.activeInHierarchy && Input.GetKeyDown(KeyCode.Escape)) {
+            gameControl.disableAllDialog();
+            onBack();
         }
-        if(www != null) {
-            if(www.isDone && !isSet) {
+        if (www != null) {
+            if (www.isDone && !isSet) {
                 spriteAvata.mainTexture = www.texture;
                 isSet = true;
             }
         }
     }
-    void deActive () {
-        gameObject.SetActive (false);
+    void deActive() {
+        gameObject.SetActive(false);
     }
 
     //public void setToggle () {
@@ -64,13 +64,13 @@ public class RoomControl : StageControl {
     //    }
     //}
 
-    public override void onBack () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        gameControl.setStage (gameControl.menu);
+    public override void onBack() {
+        GameControl.instance.sound.startClickButtonAudio();
+        gameControl.setStage(gameControl.menu);
     }
-    public void setGameName () {
+    public void setGameName() {
         string name = "CHỌN GAME";
-        switch(gameControl.gameID) {
+        switch (gameControl.gameID) {
             case GameID.TLMN:
                 name = "TIẾN LÊN MN";
                 break;
@@ -95,22 +95,22 @@ public class RoomControl : StageControl {
             case GameID.MAUBINH:
                 name = "MẬU BINH";
                 break;
-		case GameID.XOCDIA:
-			name = "XÓC ĐĨA";
-			break;
+            case GameID.XOCDIA:
+                name = "XÓC ĐĨA";
+                break;
             default:
                 break;
         }
         lb_tengame.text = name;
     }
-    public void createScollPane (List<TableItem> listTable, int typeRoom) {
-        gameControl.panelWaiting.onShow ();
-        setGameName ();
-        listTableBehavior.Clear ();
+    public void createScollPane(List<TableItem> listTable, int typeRoom) {
+        gameControl.panelWaiting.onShow();
+        setGameName();
+        listTableBehavior.Clear();
         try {
-            if(this.gameObject.activeInHierarchy) {
-                for(int i = 0; i < listTable.Count; i++) {
-                    TableBehavior tableBehavior = new TableBehavior ();
+            if (this.gameObject.activeInHierarchy) {
+                for (int i = 0; i < listTable.Count; i++) {
+                    TableBehavior tableBehavior = new TableBehavior();
                     tableBehavior.id = listTable[i].id;
                     tableBehavior.status = listTable[i].status;
                     tableBehavior.name = listTable[i].name;
@@ -123,97 +123,97 @@ public class RoomControl : StageControl {
                     tableBehavior.Lock = listTable[i].Lock;
                     tableBehavior.typeTable = listTable[i].typeTable;
                     tableBehavior.choinhanh = listTable[i].choinhanh;
-                    listTableBehavior.Add (tableBehavior);
+                    listTableBehavior.Add(tableBehavior);
 
-                    if(BaseInfo.gI ().isHideTabeFull) {
-                        if(tableBehavior.nUser == tableBehavior.maxUser) {
+                    if (BaseInfo.gI().isHideTabeFull) {
+                        if (tableBehavior.nUser == tableBehavior.maxUser) {
                             continue;
                         }
                     }
                 }
-                _instanListViewControler.InitTableView (listTableBehavior, 0);
+                _instanListViewControler.InitTableView(listTableBehavior, 0);
             }
 
             //setToggle ();
-        } catch(Exception e) {
-            Debug.LogException (e);
+        } catch (Exception e) {
+            Debug.LogException(e);
         }
-        gameControl.panelWaiting.onHide ();
+        gameControl.panelWaiting.onHide();
     }
-    public void updateAvataName () {
-        string dis = BaseInfo.gI ().mainInfo.displayname;
-        if(dis.Length > 15) {
-            dis = dis.Substring (0, 14) + "...";
+    public void updateAvataName() {
+        string dis = BaseInfo.gI().mainInfo.displayname;
+        if (dis.Length > 15) {
+            dis = dis.Substring(0, 14) + "...";
         }
         displayName.text = dis;
-        lb_ID.text = "ID: " + BaseInfo.gI ().mainInfo.userid;
-        int idAvata = BaseInfo.gI ().mainInfo.idAvata;
-        string link_ava = BaseInfo.gI ().mainInfo.link_Avatar;
+        lb_ID.text = "ID: " + BaseInfo.gI().mainInfo.userid;
+        int idAvata = BaseInfo.gI().mainInfo.idAvata;
+        string link_ava = BaseInfo.gI().mainInfo.link_Avatar;
 
-        if(link_ava == "") {
-            if(idAvata != 0) {
-                spriteAvata.GetComponent<UISprite> ().enabled = true;
-                spriteAvata.GetComponent<UITexture> ().enabled = false;
+        if (link_ava == "") {
+            if (idAvata != 0) {
+                spriteAvata.GetComponent<UISprite>().enabled = true;
+                spriteAvata.GetComponent<UITexture>().enabled = false;
                 spriteAvata.spriteName = idAvata + "";
             } else {
                 spriteAvata.spriteName = "0";
             }
         } else {
-            www = new WWW (link_ava);
-            if(www.error != null) {
-                Debug.Log ("Image WWW ERROR: " + www.error);
+            www = new WWW(link_ava);
+            if (www.error != null) {
+                Debug.Log("Image WWW ERROR: " + www.error);
             } else {
-                spriteAvata.GetComponent<UISprite> ().enabled = false;
-                spriteAvata.GetComponent<UITexture> ().enabled = true;
+                spriteAvata.GetComponent<UISprite>().enabled = false;
+                spriteAvata.GetComponent<UITexture>().enabled = true;
                 // spriteAvata.GetComponent<UITexture> ().mainTexture = www.texture;
             }
         }
     }
 
-    public void clickAvatar () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        gameControl.panelInfoPlayer.infoMe ();
-        gameControl.panelInfoPlayer.onShow ();
+    public void clickAvatar() {
+        GameControl.instance.sound.startClickButtonAudio();
+        gameControl.panelInfoPlayer.infoMe();
+        gameControl.panelInfoPlayer.onShow();
     }
 
-    public void clickButtonLamMoi () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        gameControl.panelWaiting.onShow ();
-        SendData.onUpdateRoom ();
+    public void clickButtonLamMoi() {
+        GameControl.instance.sound.startClickButtonAudio();
+        gameControl.panelWaiting.onShow();
+        SendData.onUpdateRoom();
     }
 
-    public void sortBanCuoc () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        BaseInfo.gI ().sort_giam_dan_bancuoc = !BaseInfo.gI ().sort_giam_dan_bancuoc;
+    public void sortBanCuoc() {
+        GameControl.instance.sound.startClickButtonAudio();
+        BaseInfo.gI().sort_giam_dan_bancuoc = !BaseInfo.gI().sort_giam_dan_bancuoc;
         //BaseInfo.gI().sort_giam_dan_bancuoc = true;
-        BaseInfo.gI ().type_sort = 1;
-        SendData.onUpdateRoom ();
+        BaseInfo.gI().type_sort = 1;
+        SendData.onUpdateRoom();
     }
 
-    public void sortMucCuoc () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        BaseInfo.gI ().sort_giam_dan_muccuoc = !BaseInfo.gI ().sort_giam_dan_muccuoc;
-        BaseInfo.gI ().type_sort = 2;
-        SendData.onUpdateRoom ();
+    public void sortMucCuoc() {
+        GameControl.instance.sound.startClickButtonAudio();
+        BaseInfo.gI().sort_giam_dan_muccuoc = !BaseInfo.gI().sort_giam_dan_muccuoc;
+        BaseInfo.gI().type_sort = 2;
+        SendData.onUpdateRoom();
     }
 
-    public void sortTrangThai () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        BaseInfo.gI ().sort_giam_dan_nguoichoi = !BaseInfo.gI ().sort_giam_dan_nguoichoi;
-        BaseInfo.gI ().type_sort = 3;
-        SendData.onUpdateRoom ();
+    public void sortTrangThai() {
+        GameControl.instance.sound.startClickButtonAudio();
+        BaseInfo.gI().sort_giam_dan_nguoichoi = !BaseInfo.gI().sort_giam_dan_nguoichoi;
+        BaseInfo.gI().type_sort = 3;
+        SendData.onUpdateRoom();
     }
 
-    public void clickButtonChoiNgay () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        gameControl.panelWaiting.onShow ();
-        SendData.onAutoJoinTable ();
+    public void clickButtonChoiNgay() {
+        GameControl.instance.sound.startClickButtonAudio();
+        gameControl.panelWaiting.onShow();
+        SendData.onAutoJoinTable();
     }
-    public void clickAnBanFull (bool isChecked) {
-        gameControl.panelWaiting.onShow ();
-      //  BaseInfo.gI ().isHideTabeFull = isChecked;
+    public void clickAnBanFull(bool isChecked) {
+        gameControl.panelWaiting.onShow();
+        //  BaseInfo.gI ().isHideTabeFull = isChecked;
         anbanfull = isChecked;
-        SendData.onUpdateRoom ();
+        SendData.onUpdateRoom();
     }
     //public void clickRoomVip () {
     //    GameControl.instance.sound.startClickButtonAudio ();
@@ -233,34 +233,34 @@ public class RoomControl : StageControl {
     //    }
     // //   gameControl.menu.setToggle ();
     //}
-    public void clickSetting () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        gameControl.panelSetting.onShow ();
+    public void clickSetting() {
+        GameControl.instance.sound.startClickButtonAudio();
+        gameControl.panelSetting.onShow();
     }
 
-    public void clickHelp () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        gameControl.panleHelp.onShow ();
+    public void clickHelp() {
+        GameControl.instance.sound.startClickButtonAudio();
+        gameControl.panleHelp.onShow();
     }
 
-    public void clickCreateRoom () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        gameControl.panelCreateRoom.onShow ();
+    public void clickCreateRoom() {
+        GameControl.instance.sound.startClickButtonAudio();
+        gameControl.panelCreateRoom.onShow();
     }
 
-    public void clickToiBan () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        gameControl.panelToiBan.onShow ();
+    public void clickToiBan() {
+        GameControl.instance.sound.startClickButtonAudio();
+        gameControl.panelToiBan.onShow();
     }
 
-    public void clickNoti () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        gameControl.panelNotiDoiThuong.onShow ();
+    public void clickNoti() {
+        GameControl.instance.sound.startClickButtonAudio();
+        gameControl.panelNotiDoiThuong.onShow();
     }
 
-    public void clickPlayNow () {
-        GameControl.instance.sound.startClickButtonAudio ();
-        gameControl.panelWaiting.onShow ();
-        SendData.onAutoJoinTable ();
+    public void clickPlayNow() {
+        GameControl.instance.sound.startClickButtonAudio();
+        gameControl.panelWaiting.onShow();
+        SendData.onAutoJoinTable();
     }
 }

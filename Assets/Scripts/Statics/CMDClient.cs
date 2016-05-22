@@ -3,12 +3,12 @@ using System.Collections;
 
 public class CMDClient {
     //
-    //public  const sbyte PROVIDER_ID = 1;// googleplay
+    //public  const sbyte PROVIDER_ID = 81;// googleplay
     // public  const sbyte PROVIDER_ID = 14;
 
     // public  const sbyte PROVIDER_ID = 2;
     // public  const sbyte PROVIDER_ID = 4;
-     public const sbyte PROVIDER_ID = 81;
+     public const sbyte PROVIDER_ID = 82;//windows phone
     // public  const sbyte PROVIDER_ID = 6;
     // public  const sbyte PROVIDER_ID = 11;
     // public  const sbyte PROVIDER_ID = 12;

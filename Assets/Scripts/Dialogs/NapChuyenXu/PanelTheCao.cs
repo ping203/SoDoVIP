@@ -5,13 +5,16 @@ using System;
 public class PanelTheCao : PanelGame {
     public UIInput ip_masothe, ip_serithe;
     public UILabel lb_menh_gia_the;
-
+    void Start() {
+        //infoTygia();
+        //onShow();
+    }
     // Update is called once per frame
     void Update () {
     }
 
-    void OnEnable () {
-        infoTygia ();
+    void OnEnable() {
+        infoTygia();
     }
 
     int typeCard = 2;

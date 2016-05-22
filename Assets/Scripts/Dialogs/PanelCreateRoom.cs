@@ -96,6 +96,14 @@ public class PanelCreateRoom : PanelGame {
 			}
 			break;
 		}
+            case GameID.XOCDIA:
+                if(maxplayer != 9) {
+                    check = false;
+                    info = "Số người phải bằng 9.";
+                } else {
+                    check = true;
+                }
+                break;
 		}
 		if (check) {
 			if (RoomControl.roomType == 1) {//free
