@@ -19,8 +19,9 @@ public class XocdiaPlayer : ABSUser {
     public List<GameObject> m_chipSpawn5 = new List<GameObject> ();
     private Vector3 m_originPos;
     private Vector3 m_targetPos;
-float offsetLarge = 20;
-float offset = 20;
+
+	float offsetLarge = 20;
+	float offset = 15;
     //Vi tri chip nam tren cua lon
     private Vector2 m_cuaChanPos = new Vector2 (-120.0f, 0.0f);
     private Vector2 m_cuaLePos = new Vector2 (120.0f, 0.0f);

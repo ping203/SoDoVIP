@@ -1760,7 +1760,7 @@ public class ListernerServer : IChatListener {
             BaseInfo.gI ().cskh = message.reader ().ReadUTF ();
             PlayerPrefs.SetString ("CSKH", BaseInfo.gI ().cskh);
             PlayerPrefs.Save ();
-            gameControl.login.cskh.text = BaseInfo.gI().cskh;
+			gameControl.login.setCSKH();
             BaseInfo.gI ().linkdownload = message.reader ().ReadUTF ();
             BaseInfo.gI ().current_version = message.reader ().ReadInt ();
         } catch(Exception ex) {

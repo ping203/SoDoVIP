@@ -158,8 +158,8 @@ public class MenuControl : StageControl {
         SendData.onSendGameID ((sbyte) gameControl.gameID);
     }
     public void clickSetting () {
-        //GameControl.instance.sound.startClickButtonAudio ();
-        //gameControl.panelSetting.onShow ();
+        GameControl.instance.sound.startClickButtonAudio ();
+        gameControl.panelSetting.onShow ();
     }
 
     public void clickHelp () {

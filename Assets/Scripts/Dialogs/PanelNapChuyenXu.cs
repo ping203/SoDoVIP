@@ -9,13 +9,12 @@ public class PanelNapChuyenXu : PanelGame {
     public List<Item9029> list_vina = new List<Item9029> ();
     public List<Item9029> list_mobi = new List<Item9029> ();
     //public GameObject panelTheCao;
+	public PanelTheCao panelTheCao;
     // Use this for initialization
     void Start () {
+		//panelTheCao.onShow ();
     }
 
-   // void OnEnable { 
-   //// panelTheCao.Se();
-   // }
 
     public void clickTabDoiChip () {
         if(BaseInfo.gI ().mainInfo.moneyXu <= 0) {

@@ -1,0 +1,11 @@
+ApplicationIcon.png 100x100
+
+BadgeLogo.png 58x58
+
+Logo.png 106x106
+
+SquareTile71x71.png 170x170
+
+SquareTile150x150.png 360x360
+
+StoreLogo.png 120x120

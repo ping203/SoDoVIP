@@ -95,6 +95,9 @@ public class RoomControl : StageControl {
             case GameID.MAUBINH:
                 name = "MẬU BINH";
                 break;
+		case GameID.XOCDIA:
+			name = "XÓC ĐĨA";
+			break;
             default:
                 break;
         }

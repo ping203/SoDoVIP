@@ -39,8 +39,12 @@ public class LoginControl : StageControl {
         //PlayerPrefs.Save();
         //BaseInfo.gI().isNhanLoiMoiChoi = Preference.getInstance().dataGame.isNhanLoiMoiChoi;
         //OnSubmit ();
-        cskh.text = PlayerPrefs.GetString ("CSKH");
+		setCSKH ();
     }
+
+	public void setCSKH(){
+		cskh.text = PlayerPrefs.GetString ("CSKH");
+	}
 
     private bool checkNetWork () {
         return true;
