@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 public class PanelDangKy : PanelGame {
     public UIInput ip_name, ip_pass, ip_confim_pass;
-    public UIToggle tg_sex;
+   // public UIToggle tg_sex;
 
-    public UISprite avata;
+    //public UISprite avata;
 
-    public PanelChangeAvata panelChangeAvata;
+   // public PanelChangeAvata panelChangeAvata;
 
     // Use this for initialization
     void Start () {
@@ -28,8 +28,8 @@ public class PanelDangKy : PanelGame {
 
     public void clickChangeAvata () {
         GameControl.instance.sound.startClickButtonAudio ();
-        panelChangeAvata.loadAva ();
-        panelChangeAvata.onShow ();
+        //panelChangeAvata.loadAva ();
+        //panelChangeAvata.onShow ();
     }
 
     public void onClickDongY () {

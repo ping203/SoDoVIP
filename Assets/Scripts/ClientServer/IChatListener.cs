@@ -217,4 +217,6 @@ interface IChatListener {
     //Xocdia
     void onListProduct (Message message);
     void onListItem (Message message);
+
+  void  onLichSuGiaoDich(Message message);
 }

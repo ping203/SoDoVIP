@@ -6,6 +6,7 @@ public class PanelInfoPlayer : PanelGame {
     public UILabel name;
     public UILabel chip;
     public UISprite spriteAvata;
+    public UIButton btnAvata;
     public PanelChangePassword panelChangePassword;
     public PanelChangeName panelChangeName;
     public PanelChangeAvata panelChangeAvata;
@@ -78,7 +79,7 @@ public class PanelInfoPlayer : PanelGame {
         }
         changePass.SetActive (isMe);
         changeName.SetActive (isMe);
-        spriteAvata.GetComponent<UIButton> ().enabled = isMe;
+        btnAvata.gameObject.SetActive(isMe);
 
         name.text = "Tên: " + nameinfo;
         id.text = "ID: " + userid;
@@ -96,18 +97,23 @@ public class PanelInfoPlayer : PanelGame {
                 obj.GetComponent<ItemThangThua> ().setText (slt, slth, i);
             }
         }
-        if(idAvata < 0) {
-            www = new WWW (link_avata);
-            if(www.error != null) {
+        if (link_avata == "") {
+            if (idAvata != 0) {
+                spriteAvata.GetComponent<UISprite>().enabled = true;
+                spriteAvata.GetComponent<UITexture>().enabled = false;
+                spriteAvata.spriteName = idAvata + "";
             } else {
-                spriteAvata.GetComponent<UISprite> ().enabled = false;
-                spriteAvata.GetComponent<UITexture> ().enabled = true;
-                spriteAvata.GetComponent<UITexture> ().mainTexture = www.texture;
+                spriteAvata.spriteName = "0";
             }
         } else {
-            spriteAvata.GetComponent<UISprite> ().enabled = true;
-            spriteAvata.GetComponent<UITexture> ().enabled = false;
-            spriteAvata.spriteName = idAvata + "";
+            www = new WWW(link_avata);
+            if (www.error != null) {
+                Debug.Log("Image WWW ERROR: " + www.error);
+            } else {
+                spriteAvata.GetComponent<UISprite>().enabled = false;
+                spriteAvata.GetComponent<UITexture>().enabled = true;
+                // spriteAvata.GetComponent<UITexture> ().mainTexture = www.texture;
+            }
         }
     }
 }

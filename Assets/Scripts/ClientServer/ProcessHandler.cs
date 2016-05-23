@@ -169,7 +169,7 @@ public class ProcessHandler : MessageHandler {
                         }
                         break;
                     case CMDClient.CMD_LIST_ITEM:
-                        listenner.onListItem (message);
+                        //listenner.onListItem (message);
                         break;
                     case CMDClient.CMD_INVITE_FRIEND:// nhan loi moi tu a vao tbid
                         sbyte confirm = message.reader().ReadByte();
@@ -389,7 +389,7 @@ public class ProcessHandler : MessageHandler {
                         listenner.onListBetMoney(message);
                         break;
                     case CMDClient.CMD_LIST_PRODUCT:
-                        listenner.onListProduct (message);
+                       // listenner.onListProduct (message);
                         break;
                     case CMDClient.CMD_RATE_SCRATCH_CARD:
                         listenner.onRateScratchCard(message);
@@ -407,7 +407,10 @@ public class ProcessHandler : MessageHandler {
                         listenner.onPhoneCSKH(message);
                         break;
                     case CMDClient.CMD_9029_SODO:
-                        listenner.onSMS9029 (message);
+                        //listenner.onSMS9029 (message);
+                        break;
+                    case CMDClient.CMD_LSGD:
+                        listenner.onLichSuGiaoDich(message);
                         break;
                     case CMDClient.CMD_CARD_XEP_MB:
                         listenner.onCardXepMB (message);

@@ -1,50 +1,60 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 
-public class PanelDoiThuong : PanelGame
-{
-	public GameObject tblContaintGiftTheCao;
-	public GameObject tblContaintGiftVatPham;
-	public GameObject btnGift;
+public class PanelDoiThuong : PanelGame {
+    public GameObject tblContaintGiftTheCao;
+    public GameObject tblContaintGiftVatPham;
+    public GameObject btnGift;
 
-	// Use this for initialization
-	void Start ()
-	{
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
+    public GameObject tblContaintLSGD;
+    public GameObject itemLSGD;
+    // Use this for initialization
+    void Start() {
+    }
 
-	public void addGiftInfo (int id, int type, string name, long price, string link)
-	{
-		GameObject btnT = Instantiate (btnGift) as GameObject;
-		if (type == 1) {
-			btnT.transform.parent = tblContaintGiftTheCao.transform;
-		} else {
-			btnT.transform.parent = tblContaintGiftVatPham.transform;
-		}
-		
-		btnT.transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
-		btnT.transform.localPosition = new Vector3 (0, 0, -10);
-		btnT.GetComponent<InfoGift> ().setInfoGift (id, name, link, price);
+    // Update is called once per frame
+    void Update() {
 
-        EventDelegate.Set (btnT.GetComponent<UIButton> ().onClick, delegate {
-            sendGift (btnT);
+    }
+
+    public void addGiftInfo(int id, int type, string name, long price, string link) {
+        GameObject btnT = Instantiate(btnGift) as GameObject;
+        if (type == 1) {
+            btnT.transform.parent = tblContaintGiftTheCao.transform;
+        } else {
+            btnT.transform.parent = tblContaintGiftVatPham.transform;
+        }
+
+        btnT.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        btnT.transform.localPosition = new Vector3(0, 0, -10);
+        btnT.GetComponent<InfoGift>().setInfoGift(id, name, link, price);
+
+        EventDelegate.Set(btnT.GetComponent<UIButton>().onClick, delegate {
+            sendGift(btnT);
         });
-	}
+    }
 
-    public void sendGift (GameObject obj) {
-        GameControl.instance.sound.startClickButtonAudio ();
+    public void sendGift(GameObject obj) {
+        GameControl.instance.sound.startClickButtonAudio();
         GameObject gift = obj.gameObject;
-		int id = gift.GetComponent<InfoGift> ().idGift;
-		long priceGift = gift.GetComponent<InfoGift> ().priceGift;
-		string name = gift.GetComponent<InfoGift> ().nameGift;
-		GameControl.instance.panelYesNo.onShow ("Bạn muốn đổi " + BaseInfo.formatMoneyNormal ( priceGift) + " lấy " + name, delegate {
-			SendData.onSendGift(id, priceGift);
-	});
-	}
+        int id = gift.GetComponent<InfoGift>().idGift;
+        long priceGift = gift.GetComponent<InfoGift>().priceGift;
+        string name = gift.GetComponent<InfoGift>().nameGift;
+        GameControl.instance.panelYesNo.onShow("Bạn muốn đổi " + BaseInfo.formatMoneyNormal(priceGift) + " lấy " + name, delegate {
+            SendData.onSendGift(id, priceGift);
+        });
+    }
+
+    public void createLSGD(List<LichSuGiaoDich> list) {
+        for (int i = 0; i < list.Count; i++) {
+            GameObject btnT = Instantiate(itemLSGD) as GameObject;
+            btnT.transform.parent = tblContaintLSGD.transform;
+
+            btnT.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            //btnT.transform.localPosition = new Vector3(0, 0, -10);
+            btnT.GetComponent<LichSuGiaoDich>().setInfo();
+        }
+    }
 }
