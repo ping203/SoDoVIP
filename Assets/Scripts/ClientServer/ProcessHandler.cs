@@ -4,7 +4,7 @@ using System;
 
 public class ProcessHandler : MessageHandler {
 
-    protected override void serviceMessage (Message message, int messageId) {
+    protected override void serviceMessage(Message message, int messageId) {
         try {
             DoOnMainThread.ExecuteOnMainThread.Enqueue(() => {
                 int check = 0, card = -1;
@@ -37,8 +37,7 @@ public class ProcessHandler : MessageHandler {
                         Debug.Log(" -------------- LOGIN " + b);
                         if (b == 1) {
                             listenner.onLoginSuccess(message);
-                        }
-                        else {
+                        } else {
                             listenner.onLoginFail(b, message.reader().ReadUTF());
                         }
                         SendData.isLogin = false;
@@ -47,7 +46,7 @@ public class ProcessHandler : MessageHandler {
 
                     //    break;
                     case CMDClient.CMD_LOGIN_FIRST:
-                        listenner.onLoginfirst (message);
+                        listenner.onLoginfirst(message);
                         break;
                     case CMDClient.CMD_JOIN_TABLE_PLAY:
                         // check = SerializerHelper.readInt(message);
@@ -63,18 +62,16 @@ public class ProcessHandler : MessageHandler {
                             BaseInfo.gI().choinhanh = message.reader().ReadInt();
                             BaseInfo.gI().moneyTable = BaseInfo.gI().betMoney;
                             listenner.onJoinTablePlaySuccess(message);
-                            GameControl.instance.disableAllDialog ();
-                        }
-                        else {
+                            GameControl.instance.disableAllDialog();
+                        } else {
                             if (check == -1) {
                                 listenner.onJoinTablePlayFail(message.reader()
                                             .ReadUTF());
-                            }
-                            else {
+                            } else {
                                 //SendData.onJoinTableForView(message.reader().ReadInt(),
                                 //           "");
 
-                                GameControl.instance.disableAllDialog ();
+                                GameControl.instance.disableAllDialog();
                             }
                         }
                         break;
@@ -102,11 +99,9 @@ public class ProcessHandler : MessageHandler {
                         if (by == 0) {
                             string info = message.reader().ReadUTF();
                             listenner.onStartFail(info);
-                        }
-                        else if (by == 1) {
+                        } else if (by == 1) {
                             listenner.onStartSuccess(message);
-                        }
-                        else if (by == 2) {
+                        } else if (by == 2) {
                             listenner.onStartForView(message);
                         }
                         break;
@@ -119,13 +114,13 @@ public class ProcessHandler : MessageHandler {
                     //case CMDClient.CMD_EXIT_VIEW:// nhan ds room tu server
                     //    listenner.onExitView(message);
                     //    break;
-                    case CMDClient.CMD_LIST_TABLE:
-                        card = (int)message.reader().ReadShort();
-                        if (card == -1) {
-                            listenner.onJoinRoomFail(message.reader().ReadUTF());
-                        }
-                        else {
-                            listenner.onListTable(card, message);
+                    case CMDClient.CMD_LIST_TABLE: {
+                            card = (int)message.reader().ReadShort();
+                            if (card == -1) {
+                                listenner.onJoinRoomFail(message.reader().ReadUTF());
+                            } else {
+                                listenner.onListTable(card, message);
+                            }
                         }
                         break;
                     case CMDClient.CMD_PROFILE:
@@ -161,11 +156,11 @@ public class ProcessHandler : MessageHandler {
                         break;
                     case CMDClient.CMD_REGISTER:
 
-                        card = message.reader ().ReadByte ();
-                        if(card == 0) {
-                            listenner.onRegFail (message.reader ().ReadUTF ());
+                        card = message.reader().ReadByte();
+                        if (card == 0) {
+                            listenner.onRegFail(message.reader().ReadUTF());
                         } else {
-                            listenner.onRegSuccess ();
+                            listenner.onRegSuccess();
                         }
                         break;
                     case CMDClient.CMD_LIST_ITEM:
@@ -175,8 +170,7 @@ public class ProcessHandler : MessageHandler {
                         sbyte confirm = message.reader().ReadByte();
                         if (confirm == 0) {
                             message.reader().ReadUTF();
-                        }
-                        else {
+                        } else {
                             if (!BaseInfo.gI().isView) {
                                 string nickInvite = message.reader().ReadUTF();
                                 string displayName = message.reader().ReadUTF();
@@ -219,7 +213,7 @@ public class ProcessHandler : MessageHandler {
 
                     //    break;
                     case CMDClient.CMD_UPDATE_PROFILE:
-                        listenner.onUpdateProfile (1, "");
+                        listenner.onUpdateProfile(1, "");
                         break;
                     case CMDClient.CMD_DEL_MESSAGE:
                         listenner.onDelMessage(message);
@@ -280,13 +274,13 @@ public class ProcessHandler : MessageHandler {
                     //            .reader().ReadUTF());
                     //    break;
                     case CMDClient.CMD_CALMB_RANKS:
-                        listenner.onRankMauBinh (message);
+                        listenner.onRankMauBinh(message);
                         break;
                     case CMDClient.CMD_FINAL_MAUBINH:
-                        listenner.onFinalMauBinh (message.reader ().ReadUTF ());
+                        listenner.onFinalMauBinh(message.reader().ReadUTF());
                         break;
                     case CMDClient.CMD_WINMAUBINH:
-                        listenner.onWinMauBinh (message.reader ().ReadUTF (), message.reader ().ReadByte ());
+                        listenner.onWinMauBinh(message.reader().ReadUTF(), message.reader().ReadByte());
                         break;
                     case CMDClient.CMD_INFO_ME:
                         listenner.onInfoMe(message);
@@ -328,16 +322,16 @@ public class ProcessHandler : MessageHandler {
 
 
                     case CMDClient.CMD_TOP:
-                        listenner.onTop (message);
+                        listenner.onTop(message);
                         break;
                     case CMDClient.CMD_QUESTINFO:
-                        listenner.onInfoNhiemvu (message);
+                        listenner.onInfoNhiemvu(message);
                         break;
                     case CMDClient.CMD_UPDATE_QUEST:
-                        listenner.onUpdateNhiemvu (message);
+                        listenner.onUpdateNhiemvu(message);
                         break;
                     case CMDClient.CMD_RECEIVE_FREE_MONEY:
-                        listenner.onReceiveFreeMoney (message);
+                        listenner.onReceiveFreeMoney(message);
                         break;
                     case CMDClient.CMD_GET_MONEY:
                         listenner.onGetMoney();
@@ -361,7 +355,7 @@ public class ProcessHandler : MessageHandler {
                     case CMDClient.CMD_BUY_ITEM:
                         //sbyte ib = message.reader().ReadByte();
                         //if (ib == 0)
-                          listenner.onBuyItem(message);
+                        listenner.onBuyItem(message);
                         break;
                     //case CMDClient.CMD_FOR_VIEW:
                     //    check = message.reader().ReadByte();
@@ -389,7 +383,7 @@ public class ProcessHandler : MessageHandler {
                         listenner.onListBetMoney(message);
                         break;
                     case CMDClient.CMD_LIST_PRODUCT:
-                       // listenner.onListProduct (message);
+                        // listenner.onListProduct (message);
                         break;
                     case CMDClient.CMD_RATE_SCRATCH_CARD:
                         listenner.onRateScratchCard(message);
@@ -413,47 +407,47 @@ public class ProcessHandler : MessageHandler {
                         listenner.onLichSuGiaoDich(message);
                         break;
                     case CMDClient.CMD_CARD_XEP_MB:
-                        listenner.onCardXepMB (message);
+                        listenner.onCardXepMB(message);
                         break;
                     case CMDClient.CMD_PHOM_HA:
-                        listenner.onPhomha (message);
+                        listenner.onPhomha(message);
                         break;
                     //Xoc dia
                     case CMDClient.CMD_BEGIN_XOCDIA:
-                        listenner.onBeGinXocDia (message);
+                        listenner.onBeGinXocDia(message);
                         break;
                     case CMDClient.CMD_BEGIN_XOCDIA_CUOC:
-                        listenner.onBeginXocDiaTimeDatcuoc (message);
+                        listenner.onBeginXocDiaTimeDatcuoc(message);
                         break;
                     case CMDClient.CMD_MO_BAT:
-                        listenner.onXocDiaMobat (message);
+                        listenner.onXocDiaMobat(message);
                         break;
                     case CMDClient.CMD_XOCDIA_DATCUOC:
-                        listenner.onXocDiaDatcuoc (message);
+                        listenner.onXocDiaDatcuoc(message);
                         break;
                     case CMDClient.CMD_ARR_BET_XD:
-                        listenner.onXocDiaCacMucCuoc (message);
+                        listenner.onXocDiaCacMucCuoc(message);
                         break;
                     case CMDClient.CMD_DATLAI:
-                        listenner.onXocDiaDatlai (message);
+                        listenner.onXocDiaDatlai(message);
                         break;
                     case CMDClient.CMD_GAPDOI:
-                        listenner.onXocDiaDatGapdoi (message);
+                        listenner.onXocDiaDatGapdoi(message);
                         break;
                     case CMDClient.CMD_HUYCUOC:
-                        listenner.onXocDiaHuycuoc (message);
+                        listenner.onXocDiaHuycuoc(message);
                         break;
                     case CMDClient.CMD_UPDATE_CUA:
-                        listenner.onXocDiaUpdateCua (message);
+                        listenner.onXocDiaUpdateCua(message);
                         break;
                     case CMDClient.CMD_HISTORY_XD:
-                        listenner.onXocDiaHistory (message);
+                        listenner.onXocDiaHistory(message);
                         break;
                     case CMDClient.CMD_CHUCNANG_HUYCUA:
-                        listenner.onXocDiaChucNangHuycua (message);
+                        listenner.onXocDiaChucNangHuycua(message);
                         break;
                     case CMDClient.CMD_BEGIN_XOCDIA_DUNGCUOC:
-                        listenner.onXocDiaBeginTimerDungCuoc (message);
+                        listenner.onXocDiaBeginTimerDungCuoc(message);
                         break;
                     //Xoc dia.
                     default:
@@ -465,26 +459,25 @@ public class ProcessHandler : MessageHandler {
 
                 }
             });
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Debug.LogException(ex);
 
         }
     }
 
-    public override void onConnectionFail () {
-        throw new System.NotImplementedException ();
+    public override void onConnectionFail() {
+        throw new System.NotImplementedException();
     }
 
-    public override void onDisconnected () {
-        DoOnMainThread.ExecuteOnMainThread.Enqueue (() => {
-            listenner.onDisConnect ();
+    public override void onDisconnected() {
+        DoOnMainThread.ExecuteOnMainThread.Enqueue(() => {
+            listenner.onDisConnect();
         });
 
     }
 
-    public override void onConnectOk () {
-        Debug.Log ("Connect OK...");
+    public override void onConnectOk() {
+        Debug.Log("Connect OK...");
     }
 
     private static ProcessHandler instance;
@@ -492,23 +485,23 @@ public class ProcessHandler : MessageHandler {
     static int step;
     private static IChatListener listenner;
 
-    public ProcessHandler () {
+    public ProcessHandler() {
 
     }
 
-    public static ProcessHandler getInstance () {
-        if(instance == null) {
-            instance = new ProcessHandler ();
+    public static ProcessHandler getInstance() {
+        if (instance == null) {
+            instance = new ProcessHandler();
         }
 
         return instance;
     }
 
-    public static void setListenner (ListernerServer listener) {
+    public static void setListenner(ListernerServer listener) {
         listenner = listener;
     }
 
-    public static void setSecondHandler (MessageHandler handler) {
+    public static void setSecondHandler(MessageHandler handler) {
         secondHandler = null;
         secondHandler = handler;
     }

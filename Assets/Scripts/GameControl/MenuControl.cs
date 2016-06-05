@@ -33,7 +33,7 @@ public class MenuControl : StageControl {
         } else {
             btn_doithuong.SetActive(true);
         }
-        //Debug.Log ("1111111111 Vao day roi!" + BaseInfo.gI ().isLogin);
+        Debug.Log ("1111111111 Vao day roi!" + BaseInfo.gI ().isDoiThuong);
 
         //gameControl.panelNotiDoiThuong.onShow ();
         //StartCoroutine (showPopup ());

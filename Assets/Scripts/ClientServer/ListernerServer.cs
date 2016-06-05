@@ -162,8 +162,8 @@ public class ListernerServer : IChatListener {
                 ctb.id = (int)(message.reader().ReadShort());
                 ctb.status = (message.reader().ReadByte());
                 ctb.nUser = (message.reader().ReadByte());
-                sbyte ilock = message.reader().ReadByte();
-                ctb.Lock = ilock;
+                ctb.Lock = message.reader().ReadByte();
+                //ctb.Lock = ilock;
                 ctb.money = message.reader().ReadLong();
                 ctb.needMoney = message.reader().ReadLong();
                 ctb.maxMoney = message.reader().ReadLong();
@@ -187,8 +187,8 @@ public class ListernerServer : IChatListener {
                 ctb.id = (int)(message.reader().ReadShort());
                 ctb.status = (message.reader().ReadByte());
                 ctb.nUser = (message.reader().ReadByte());
-                sbyte ilock = message.reader().ReadByte();
-                ctb.Lock = ilock;
+                ctb.Lock = message.reader().ReadByte();
+                //ctb.Lock = ilock;
                 ctb.money = message.reader().ReadLong();
                 ctb.needMoney = message.reader().ReadLong();
                 ctb.maxMoney = message.reader().ReadLong();
@@ -411,16 +411,16 @@ public class ListernerServer : IChatListener {
             BaseInfo.gI().mainInfo.userid = msg.reader().ReadLong();
             BaseInfo.gI().mainInfo.moneyXu = msg.reader().ReadLong();
             BaseInfo.gI().mainInfo.moneyChip = msg.reader().ReadLong();
-            msg.reader().ReadUTF();
-
-            Debug.Log("xuuuuuuuuuuuuuuuu " + BaseInfo.gI().mainInfo.moneyXu);
-            Debug.Log("chipppppppppppppp " + BaseInfo.gI().mainInfo.moneyChip);
+            // System.out.println("money: " + BaseInfo.gI().mainInfo.money);
+            //  System.out.println("chip: " + BaseInfo.gI().mainInfo.chip);
+            BaseInfo.gI().mainInfo.nick = msg.reader().ReadUTF();
             BaseInfo.gI().mainInfo.displayname = msg.reader().ReadUTF();
             BaseInfo.gI().mainInfo.link_Avatar = msg.reader().ReadUTF();
             BaseInfo.gI().mainInfo.idAvata = msg.reader().ReadInt();
             BaseInfo.gI().mainInfo.exp = msg.reader().ReadLong();
             BaseInfo.gI().mainInfo.score_vip = msg.reader().ReadLong();
-            BaseInfo.gI().mainInfo.total_money_charging = msg.reader().ReadLong();
+            BaseInfo.gI().mainInfo.total_money_charging = msg.reader()
+                    .ReadLong();
             BaseInfo.gI().mainInfo.total_time_play = msg.reader().ReadLong();
 
             BaseInfo.gI().mainInfo.soLanThang = msg.reader().ReadUTF();
@@ -428,55 +428,42 @@ public class ListernerServer : IChatListener {
             BaseInfo.gI().mainInfo.soTienMax = msg.reader().ReadLong();
             BaseInfo.gI().mainInfo.soChipMax = msg.reader().ReadLong();
             BaseInfo.gI().mainInfo.soGDThanhCong = msg.reader().ReadInt();
-            string email_sdt = msg.reader().ReadUTF();
-
+            String email_sdt = msg.reader().ReadUTF();
             BaseInfo.gI().mainInfo.gender = msg.reader().ReadByte();
-
-            string[] s = Regex.Split(email_sdt, "\\*");
+            String[] s = Regex.Split(email_sdt, "\\*");// email_sdt.Split("\\*");
             BaseInfo.gI().mainInfo.email = s[0];
             if (s.Length > 1)
                 BaseInfo.gI().mainInfo.phoneNumber = s[1];
             else {
                 BaseInfo.gI().mainInfo.phoneNumber = "";
             }
-
             if (BaseInfo.gI().mainInfo.exp < 10) {
                 BaseInfo.gI().mainInfo.level_vip = 0;
-            } else if (BaseInfo.gI().mainInfo.exp >= 30 && BaseInfo.gI().mainInfo.exp < 100) {
+            } else if (BaseInfo.gI().mainInfo.exp >= 30
+                    && BaseInfo.gI().mainInfo.exp < 100) {
                 BaseInfo.gI().mainInfo.level_vip = 1;
-            } else if (BaseInfo.gI().mainInfo.exp >= 100 && BaseInfo.gI().mainInfo.exp < 300) {
+            } else if (BaseInfo.gI().mainInfo.exp >= 100
+                    && BaseInfo.gI().mainInfo.exp < 300) {
                 BaseInfo.gI().mainInfo.level_vip = 2;
-            } else if (BaseInfo.gI().mainInfo.exp >= 300 && BaseInfo.gI().mainInfo.exp < 10000) {
+            } else if (BaseInfo.gI().mainInfo.exp >= 300
+                    && BaseInfo.gI().mainInfo.exp < 10000) {
                 BaseInfo.gI().mainInfo.level_vip = 3;
-            } else if (BaseInfo.gI().mainInfo.exp >= 10000 && BaseInfo.gI().mainInfo.exp < 100000) {
+            } else if (BaseInfo.gI().mainInfo.exp >= 10000
+                    && BaseInfo.gI().mainInfo.exp < 100000) {
                 BaseInfo.gI().mainInfo.level_vip = 4;
             } else if (BaseInfo.gI().mainInfo.exp > 100000) {
                 BaseInfo.gI().mainInfo.level_vip = 5;
             }
 
-            //switch(UnityPluginForWindowPhone.Class1.getDeviceNetworkInformation ()) {
-            //    case "VIETTEL":
-            //        BaseInfo.gI ().TELCO_CODE = 1;
-            //        break;
-            //    case "VINAPHONE":
-            //        BaseInfo.gI ().TELCO_CODE = 2;
-            //        break;
-            //    case "MOBIFONE":
-            //        BaseInfo.gI ().TELCO_CODE = 3;
-            //        break;
-            //    default:
-            //        BaseInfo.gI ().TELCO_CODE = 1;
-            //        break;
-            //}
-
             gameControl.menu.updateAvataName();
             gameControl.room.updateAvataName();
             BaseInfo.gI().isNhanLoiMoiChoi = true;
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
+
+        } catch (IOException e) {
             Debug.LogException(e);
         }
     }
+
 
     public void onStartFail(string info) {
         gameControl.panelWaiting.onHide();
