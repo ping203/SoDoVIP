@@ -13,6 +13,8 @@ public class MenuControl : StageControl {
     public UISprite[] stars;*/
 
     public UISprite spriteAvata;
+
+   public GameObject btn_doithuong;
     //public UIToggle vip;
     //public UIToggle thuong;
     //   public GameObject info;
@@ -26,6 +28,11 @@ public class MenuControl : StageControl {
         www = null;
         isSet = false;
         updateAvataName ();
+        if (BaseInfo.gI().isDoiThuong == 0) {
+            btn_doithuong.SetActive(false);
+        } else {
+            btn_doithuong.SetActive(true);
+        }
         //Debug.Log ("1111111111 Vao day roi!" + BaseInfo.gI ().isLogin);
 
         //gameControl.panelNotiDoiThuong.onShow ();

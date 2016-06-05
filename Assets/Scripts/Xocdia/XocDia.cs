@@ -74,8 +74,8 @@ public class XocDia : BaseCasino {
     public UIButton m_btnHuyChan;
     public UIButton m_btnHuyLe;
     public UIButton m_btnHuyCai;
-    private static Color COLOR_DISABLE_BTN = new Color (170.0f / 255.0f, 170.0f / 255.0f, 170.0f / 255.0f);
-    private static Color COLOR_DISABLE_TXT_BTN = new Color (255.0f / 255.0f, 0.0f, 0.0f);
+    private static Color COLOR_DISABLE_BTN = new Color(170.0f / 255.0f, 170.0f / 255.0f, 170.0f / 255.0f);
+    private static Color COLOR_DISABLE_TXT_BTN = new Color(255.0f / 255.0f, 0.0f, 0.0f);
 
     //Kiem tra viec dat cuoc cua player0.
     private bool m_isBetMe = false;
@@ -84,455 +84,455 @@ public class XocDia : BaseCasino {
     private bool m_isBetPrevious = false;
 
     //Player dat cuoc cua le va chan.
-    private List<ABSUser> m_playerCCC = new List<ABSUser> ();
-    private List<ABSUser> m_playerCCL = new List<ABSUser> ();
+    private List<ABSUser> m_playerCCC = new List<ABSUser>();
+    private List<ABSUser> m_playerCCL = new List<ABSUser>();
 
     private bool m_me_master = false;
 
     private bool m_chipStopMove = false;
 
-    void Awake () {
+    void Awake() {
         ChipXocdia.onChipMove += OnChipMove;
         ChipXocdia.onChipMoveFinish += OnChipMoveFinish;
     }
 
-    public void Start () {
+    public void Start() {
         //--------------------
         //So tien cuoc thong ke
-        if(this.m_totalMoney == null) {
-            this.m_totalMoney = new long[6];
+        if (m_totalMoney == null) {
+            m_totalMoney = new long[6];
         } else {
-            for(int i = 0; i < this.m_totalMoney.Length; i++) {
-                this.m_totalMoney[i] = 0;
+            for (int i = 0; i < m_totalMoney.Length; i++) {
+                m_totalMoney[i] = 0;
             }
         }
 
-        if(this.m_totalMeMoney == null) {
-            this.m_totalMeMoney = new long[6];
+        if (m_totalMeMoney == null) {
+            m_totalMeMoney = new long[6];
         } else {
-            for(int i = 0; i < this.m_totalMeMoney.Length; i++) {
-                this.m_totalMeMoney[i] = 0;
+            for (int i = 0; i < m_totalMeMoney.Length; i++) {
+                m_totalMeMoney[i] = 0;
             }
         }
 
-        for(int i = 0; i < this.m_totalMoneyCuaCuoc.Length; i++) {
-            this.m_totalMoneyCuaCuoc[i].text = "0";
+        for (int i = 0; i < m_totalMoneyCuaCuoc.Length; i++) {
+            m_totalMoneyCuaCuoc[i].text = "0";
         }
 
-        for(int i = 0; i < this.m_totalMeMoneyCuaCuoc.Length; i++) {
-            this.m_totalMeMoneyCuaCuoc[i].text = "0";
+        for (int i = 0; i < m_totalMeMoneyCuaCuoc.Length; i++) {
+            m_totalMeMoneyCuaCuoc[i].text = "0";
         }
         //So tien cuoc thong ke.
         //--------------------
     }
 
-    private void CreateIndexPos () {
-        this.m_indexPos = new List<int> ();
-        for(int i = 0; i < 9; i++) {
-            this.m_indexPos.Add (i);
+    private void CreateIndexPos() {
+        m_indexPos = new List<int>();
+        for (int i = 0; i < 9; i++) {
+            m_indexPos.Add(i);
         }
     }
 
-    private void ClearIndexPos () {
-        if(this.m_indexPos.Count > 0) {
-            this.m_indexPos.Clear ();
+    private void ClearIndexPos() {
+        if (m_indexPos.Count > 0) {
+            m_indexPos.Clear();
         }
     }
 
-    private void ClearBaixocdia () {
-        if(this.m_baiXocdia != null && this.m_baiXocdia.Count > 0) {
-            for(int i = 0; i < this.m_baiXocdia.Count; i++) {
-                Destroy (this.m_baiXocdia[i]);
+    private void ClearBaixocdia() {
+        if (m_baiXocdia != null && m_baiXocdia.Count > 0) {
+            for (int i = 0; i < m_baiXocdia.Count; i++) {
+                Destroy(m_baiXocdia[i]);
             }
 
-            this.m_baiXocdia.Clear ();
+            m_baiXocdia.Clear();
         }
     }
 
-    public override void setMaster (string nick) {
-        base.setMaster (nick);
-        if(nick != "") {
+    public override void setMaster(string nick) {
+        base.setMaster(nick);
+        if (nick != "") {
             SystemIsMaster = false;
-            PlayerLamcai = players[getPlayer (nick)].gameObject.transform;
+            PlayerLamcai = players[getPlayer(nick)].gameObject.transform;
 
             //Player-self lam cai.
-            if(BaseInfo.gI ().mainInfo.nick.Equals (nick)) {
-                this.m_me_master = true;
-                this.m_btnLamcaiLabel.text = "Hủy cái";
-                SetVisibleButtonTable (false, false, false, true, true, true);
+            if (BaseInfo.gI().mainInfo.nick.Equals(nick)) {
+                m_me_master = true;
+                m_btnLamcaiLabel.text = "Hủy cái";
+                SetVisibleButtonTable(false, false, false, true, true, true);
             } else {
-                this.m_me_master = false;
-                this.m_btnLamcaiLabel.text = "Làm cái";
-                SetVisibleButtonTable (true, true, true, false, false, false);
+                m_me_master = false;
+                m_btnLamcaiLabel.text = "Làm cái";
+                SetVisibleButtonTable(true, true, true, false, false, false);
             }
 
         } else {
-            this.m_me_master = false;
+            m_me_master = false;
             SystemIsMaster = true;
             PlayerLamcai = null;
 
-            this.m_btnLamcaiLabel.text = "Làm cái";
-            SetVisibleButtonTable (true, true, true, true, false, false);
+            m_btnLamcaiLabel.text = "Làm cái";
+            SetVisibleButtonTable(true, true, true, true, false, false);
             //SetEnableButtonTable (false, false, false, true);
         }
 
     }
 
-    public override void onJoinTableSuccess (string master) {
+    public override void onJoinTableSuccess(string master) {
         //Play sound.
-        gameControl.sound.startVaobanAudio ();
+        gameControl.sound.startVaobanAudio();
         //Play sound.
 
-        for(int i = 0; i < nUsers; i++) {
-            if(!players[i].isSit ()) {
-                players[i].setInvite (true);
+        for (int i = 0; i < nUsers; i++) {
+            if (!players[i].isSit()) {
+                players[i].setInvite(true);
             } else {
-                players[i].setInvite (false);
+                players[i].setInvite(false);
             }
         }
         masterID = "";
-        toggleLock.gameObject.SetActive (false);
+        toggleLock.gameObject.SetActive(false);
 
         //Remove animation.
-        this.m_winXocdia.RemoveWinXocdia ();
-        for(int i = 0; i < players.Length; i++) {
-            players[i].GetComponent<XocdiaPlayer> ().SetPlayerLose ();
-            players[i].GetComponent<XocdiaPlayer> ().RemoveAllChip ();
+        m_winXocdia.RemoveWinXocdia();
+        for (int i = 0; i < players.Length; i++) {
+            players[i].GetComponent<XocdiaPlayer>().SetPlayerLose();
+            players[i].GetComponent<XocdiaPlayer>().RemoveAllChip();
         }
 
-        if(this.m_diaComponent != null) {
-            this.m_diaComponent.SetAnimationXocdiaIdle ();
+        if (m_diaComponent != null) {
+            m_diaComponent.SetAnimationXocdiaIdle();
         }
 
         //Chua dat cuoc
-        this.m_isBetMe = false;
-        this.m_isBetMeAgain = false;
-        this.m_me_master = false;
+        m_isBetMe = false;
+        m_isBetMeAgain = false;
+        m_me_master = false;
 
         //Set lam cai.
-        this.m_btnLamcaiLabel.text = "Làm cái";
-        if(master.Equals ("")) {
+        m_btnLamcaiLabel.text = "Làm cái";
+        if (master.Equals("")) {
             //He thong lam cai.
             SystemIsMaster = true;
-            SetVisibleButtonTable (true, true, true, true, false, false);
+            SetVisibleButtonTable(true, true, true, true, false, false);
             //SetEnableButtonTable (false, false, false, true);
         } else {
-            SetVisibleButtonTable (true, true, true, false, false, false);
+            SetVisibleButtonTable(true, true, true, false, false, false);
 
-            for(int i = 0; i < players.Length; i++) {
-                if(players[i].getName ().Equals (master)) {
-                    players[i].setMaster (true);
+            for (int i = 0; i < players.Length; i++) {
+                if (players[i].getName().Equals(master)) {
+                    players[i].setMaster(true);
                     SystemIsMaster = false;
                     PlayerLamcai = players[i].gameObject.transform;
                 } else {
-                    players[i].setMaster (false);
+                    players[i].setMaster(false);
                 }
             }
         }
 
         //Khong cho dat cuoc
-        this.m_isDatCuocCua = false;
+        m_isDatCuocCua = false;
 
         //Set default loai chip.
         //Set chip cuoc
-        //this.m_chipCuoc = this.m_chips[0];
+        // m_chipCuoc =  m_chips[0];
 
         //Set default animation muc cuoc.
-        for(int i = 0; i < this.m_mucCuocAnim.Count; i++) {
-            if(i == 0)
-                this.m_mucCuocAnim[i].SetActive (true);
+        for (int i = 0; i < m_mucCuocAnim.Count; i++) {
+            if (i == 0)
+                m_mucCuocAnim[i].SetActive(true);
             else {
-                this.m_mucCuocAnim[i].SetActive (false);
+                m_mucCuocAnim[i].SetActive(false);
             }
         }
     }
 
-    public override void onBack () {
-        base.onBack ();
+    public override void onBack() {
+        base.onBack();
 
         //Reset all data.
         PlayerLamcai = null;
         SystemIsMaster = true;
-        ClearIndexPos ();
-        ClearBaixocdia ();
+        ClearIndexPos();
+        ClearBaixocdia();
 
         //Reset all time.
-        this.m_timerWaiting.ResetAllTimer ();
-        this.m_winXocdia.RemoveWinXocdia ();
-        for(int i = 0; i < players.Length; i++) {
-            players[i].GetComponent<XocdiaPlayer> ().SetPlayerLose ();
-            players[i].GetComponent<XocdiaPlayer> ().RemoveAllChip ();
+        m_timerWaiting.ResetAllTimer();
+        m_winXocdia.RemoveWinXocdia();
+        for (int i = 0; i < players.Length; i++) {
+            players[i].GetComponent<XocdiaPlayer>().SetPlayerLose();
+            players[i].GetComponent<XocdiaPlayer>().RemoveAllChip();
         }
-        if(this.m_thongbaoXocdia != null) {
-            this.m_thongbaoXocdia.SetAnimationThongbao_Idle ();
+        if (m_thongbaoXocdia != null) {
+            m_thongbaoXocdia.SetAnimationThongbao_Idle();
         }
-        if(this.m_thongbaoXocdia1 != null) {
-            this.m_thongbaoXocdia1.EndFadeIn ();
+        if (m_thongbaoXocdia1 != null) {
+            m_thongbaoXocdia1.EndFadeIn();
         }
-        if(this.m_diaComponent != null) {
-            this.m_diaComponent.SetAnimationXocdiaIdle ();
+        if (m_diaComponent != null) {
+            m_diaComponent.SetAnimationXocdiaIdle();
         }
 
         //--------------------
         //So tien cuoc thong ke
-        if(this.m_totalMoney == null) {
-            this.m_totalMoney = new long[6];
+        if (m_totalMoney == null) {
+            m_totalMoney = new long[6];
         } else {
-            for(int i = 0; i < this.m_totalMoney.Length; i++) {
-                this.m_totalMoney[i] = 0;
+            for (int i = 0; i < m_totalMoney.Length; i++) {
+                m_totalMoney[i] = 0;
             }
         }
 
-        if(this.m_totalMeMoney == null) {
-            this.m_totalMeMoney = new long[6];
+        if (m_totalMeMoney == null) {
+            m_totalMeMoney = new long[6];
         } else {
-            for(int i = 0; i < this.m_totalMeMoney.Length; i++) {
-                this.m_totalMeMoney[i] = 0;
+            for (int i = 0; i < m_totalMeMoney.Length; i++) {
+                m_totalMeMoney[i] = 0;
             }
         }
 
-        for(int i = 0; i < this.m_totalMoneyCuaCuoc.Length; i++) {
-            this.m_totalMoneyCuaCuoc[i].text = "0";
+        for (int i = 0; i < m_totalMoneyCuaCuoc.Length; i++) {
+            m_totalMoneyCuaCuoc[i].text = "0";
         }
 
-        for(int i = 0; i < this.m_totalMeMoneyCuaCuoc.Length; i++) {
-            this.m_totalMeMoneyCuaCuoc[i].text = "0";
+        for (int i = 0; i < m_totalMeMoneyCuaCuoc.Length; i++) {
+            m_totalMeMoneyCuaCuoc[i].text = "0";
         }
         //So tien cuoc thong ke.
         //--------------------
 
-        this.m_isBetMe = false;
-        this.m_isBetMeAgain = false;
+        m_isBetMe = false;
+        m_isBetMeAgain = false;
     }
 
-    public override void setMasterSecond (string master) {
-        for(int i = 0; i < nUsers; i++) {
-            if(!players[i].isSit ()) {
-                players[i].setInvite (true);
+    public override void setMasterSecond(string master) {
+        for (int i = 0; i < nUsers; i++) {
+            if (!players[i].isSit()) {
+                players[i].setInvite(true);
             } else {
-                players[i].setInvite (false);
+                players[i].setInvite(false);
             }
         }
         masterID = "";
-        toggleLock.gameObject.SetActive (false);
+        toggleLock.gameObject.SetActive(false);
     }
 
-    public override void onTimeAuToStart (sbyte time) {
+    public override void onTimeAuToStart(sbyte time) {
 
-        SetEnableButtonTable (false, false, false, true, false, false);
+        SetEnableButtonTable(false, false, false, true, false, false);
 
         //--------------------
         //So tien cuoc thong ke
-        if(this.m_totalMoney == null) {
-            this.m_totalMoney = new long[6];
+        if (m_totalMoney == null) {
+            m_totalMoney = new long[6];
         } else {
-            for(int i = 0; i < this.m_totalMoney.Length; i++) {
-                this.m_totalMoney[i] = 0;
+            for (int i = 0; i < m_totalMoney.Length; i++) {
+                m_totalMoney[i] = 0;
             }
         }
 
-        if(this.m_totalMeMoney == null) {
-            this.m_totalMeMoney = new long[6];
+        if (m_totalMeMoney == null) {
+            m_totalMeMoney = new long[6];
         } else {
-            for(int i = 0; i < this.m_totalMeMoney.Length; i++) {
-                this.m_totalMeMoney[i] = 0;
+            for (int i = 0; i < m_totalMeMoney.Length; i++) {
+                m_totalMeMoney[i] = 0;
             }
         }
 
-        for(int i = 0; i < this.m_totalMoneyCuaCuoc.Length; i++) {
-            this.m_totalMoneyCuaCuoc[i].text = "0";
+        for (int i = 0; i < m_totalMoneyCuaCuoc.Length; i++) {
+            m_totalMoneyCuaCuoc[i].text = "0";
         }
 
-        for(int i = 0; i < this.m_totalMeMoneyCuaCuoc.Length; i++) {
-            this.m_totalMeMoneyCuaCuoc[i].text = "0";
+        for (int i = 0; i < m_totalMeMoneyCuaCuoc.Length; i++) {
+            m_totalMeMoneyCuaCuoc[i].text = "0";
         }
 
-        if(this.m_diaComponent != null) {
-            this.m_diaComponent.SetAnimationXocdiaIdle ();
+        if (m_diaComponent != null) {
+            m_diaComponent.SetAnimationXocdiaIdle();
         }
 
         //Chua dat cuoc.
-        this.m_isBetMe = false;
-        this.m_isBetMeAgain = false;
+        m_isBetMe = false;
+        m_isBetMeAgain = false;
 
         //Khong cho dat cuoc
-        this.m_isDatCuocCua = false;
+        m_isDatCuocCua = false;
 
         //Clear bai xoc dia cu.
-        ClearBaixocdia ();
+        ClearBaixocdia();
 
         //Set timer.
-        if(this.m_thongbaoXocdia != null) {
-            this.m_thongbaoXocdia.SetLbThongbao ("Chờ bắt đầu ván mới");
-            this.m_thongbaoXocdia.SetAnimationThongbao_Xuong ();
+        if (m_thongbaoXocdia != null) {
+            m_thongbaoXocdia.SetLbThongbao("Chờ bắt đầu ván mới");
+            m_thongbaoXocdia.SetAnimationThongbao_Xuong();
         }
 
-        if(this.m_diaComponent != null) {
-            this.m_diaComponent.SetAnimationUpbat ();
+        if (m_diaComponent != null) {
+            m_diaComponent.SetAnimationUpbat();
         }
 
-        if(this.m_timerWaiting != null) {
-            this.m_timerWaiting.setTimeAutoStart (time);
+        if (m_timerWaiting != null) {
+            m_timerWaiting.setTimeAutoStart(time);
         }
         //Set timer.
     }
 
-    public void OnChipMove (string playerName) {
-        if(BaseInfo.gI().mainInfo.nick.Equals(playerName))
-            this.m_chipStopMove = false;
+    public void OnChipMove(string playerName) {
+        if (BaseInfo.gI().mainInfo.nick.Equals(playerName))
+            m_chipStopMove = false;
     }
 
-    public void OnChipMoveFinish (string playerName) {
-        if(BaseInfo.gI ().mainInfo.nick.Equals (playerName))
-            this.m_chipStopMove = true;
+    public void OnChipMoveFinish(string playerName) {
+        if (BaseInfo.gI().mainInfo.nick.Equals(playerName))
+            m_chipStopMove = true;
     }
 
-    public override void onBeGinXocDia (int time) {
+    public override void onBeGinXocDia(int time) {
         //Play sound.
-        gameControl.sound.startXocdiaAudio ();
+        gameControl.sound.startXocdiaAudio();
         //Play sound.
 
-        if(this.m_diaComponent != null) {
-            this.m_diaComponent.SetAnimationXocdiaIdle ();
+        if (m_diaComponent != null) {
+            m_diaComponent.SetAnimationXocdiaIdle();
         }
-        SetEnableButtonTable (false, false, false, false, false, false);
+        SetEnableButtonTable(false, false, false, false, false, false);
 
-        if(this.m_timerWaiting != null) {
-            this.m_timerWaiting.setTimeAutoStart (0);
-            this.m_timerWaiting.hideTimeWaiting ();
-            this.m_thongbaoXocdia.SetAnimationThongbao_Xuong ();
-            this.m_thongbaoXocdia.SetLbThongbao ("Nhà cái bắt đầu xóc");
+        if (m_timerWaiting != null) {
+            m_timerWaiting.setTimeAutoStart(0);
+            m_timerWaiting.hideTimeWaiting();
+            m_thongbaoXocdia.SetAnimationThongbao_Xuong();
+            m_thongbaoXocdia.SetLbThongbao("Nhà cái bắt đầu xóc");
 
-            this.m_timerWaiting.setTimeBeginXocdia (time);
+            m_timerWaiting.setTimeBeginXocdia(time);
         }
-        if(this.m_diaComponent != null) {
-            this.m_diaComponent.SetAnimationXocdia ();
+        if (m_diaComponent != null) {
+            m_diaComponent.SetAnimationXocdia();
         }
     }
 
-    public override void onBeginXocDiaTimeDatcuoc (int time) {
-        if(this.m_diaComponent != null) {
-            this.m_diaComponent.SetAnimationXocdiaIdle ();
+    public override void onBeginXocDiaTimeDatcuoc(int time) {
+        if (m_diaComponent != null) {
+            m_diaComponent.SetAnimationXocdiaIdle();
         }
 
-        if(this.m_me_master == true) {
-            SetEnableButtonTable (false, false, false, false, false, false);
+        if (m_me_master == true) {
+            SetEnableButtonTable(false, false, false, false, false, false);
         } else {
-            SetEnableButtonTable (true, true, true, false, false, false);
+            SetEnableButtonTable(true, true, true, false, false, false);
         }
 
         //Cho phep dat cuoc
-        this.m_isDatCuocCua = true;
+        m_isDatCuocCua = true;
 
-        if(time > 0) {
-            if(this.m_timerWaiting != null) {
-                this.m_timerWaiting.setTimeBeginXocdia (0);
-                this.m_timerWaiting.hideTimeWaiting ();
-                this.m_timerWaiting.setTimeBeginDatcuoc (time);
+        if (time > 0) {
+            if (m_timerWaiting != null) {
+                m_timerWaiting.setTimeBeginXocdia(0);
+                m_timerWaiting.hideTimeWaiting();
+                m_timerWaiting.setTimeBeginDatcuoc(time);
             }
-            if(this.m_thongbaoXocdia != null) {
-                this.m_thongbaoXocdia.SetLbThongbao ("Đặt cược");
-                this.m_thongbaoXocdia.SetAnimationThongbao_Xuong ();
+            if (m_thongbaoXocdia != null) {
+                m_thongbaoXocdia.SetLbThongbao("Đặt cược");
+                m_thongbaoXocdia.SetAnimationThongbao_Xuong();
             }
         }
     }
 
-    public override void onXocDiaMobat (int numRed) {
+    public override void onXocDiaMobat(int numRed) {
 
-        SetEnableButtonTable (false, false, false, false, false, false);
+        SetEnableButtonTable(false, false, false, false, false, false);
 
         //Khong cho dat cuoc
-        this.m_isDatCuocCua = false;
+        m_isDatCuocCua = false;
 
         //Tao list index position
-        CreateIndexPos ();
+        CreateIndexPos();
 
-        if(this.m_timerWaiting != null) {
-            this.m_timerWaiting.setTimeBeginDatcuoc (0);
-            this.m_timerWaiting.setTimeBeginDungcuoc (0);
-            this.m_timerWaiting.hideTimeWaiting ();
+        if (m_timerWaiting != null) {
+            m_timerWaiting.setTimeBeginDatcuoc(0);
+            m_timerWaiting.setTimeBeginDungcuoc(0);
+            m_timerWaiting.hideTimeWaiting();
         }
 
-        if(this.m_thongbaoXocdia != null) {
-            this.m_thongbaoXocdia.SetLbThongbao ("Mở bát");
-            this.m_thongbaoXocdia.SetAnimationThongbao_Xuong ();
+        if (m_thongbaoXocdia != null) {
+            m_thongbaoXocdia.SetLbThongbao("Mở bát");
+            m_thongbaoXocdia.SetAnimationThongbao_Xuong();
         }
 
-        if(this.m_diaComponent != null) {
-            this.m_diaComponent.SetAnimationMobat ();
+        if (m_diaComponent != null) {
+            m_diaComponent.SetAnimationMobat();
         }
 
-        this.m_baiXocdia = new List<GameObject> ();
+        m_baiXocdia = new List<GameObject>();
         int numWhite = 4 - numRed;
-        for(int i = 0; i < numRed; i++) {
+        for (int i = 0; i < numRed; i++) {
             //Random position
-            int rd = Random.Range (0, this.m_indexPos.Count);
-            int index = this.m_indexPos[rd];
+            int rd = Random.Range(0, m_indexPos.Count);
+            int index = m_indexPos[rd];
 
-            GameObject go = Instantiate (this.xdRed) as GameObject;
-            go.transform.SetParent (this.m_baixocdia, true);
-            go.transform.position = this.m_pos[index].position;
+            GameObject go = Instantiate(xdRed) as GameObject;
+            go.transform.SetParent(m_baixocdia, true);
+            go.transform.position = m_pos[index].position;
             go.transform.localScale = Vector3.one;
 
-            this.m_indexPos.Remove (index);
-            this.m_baiXocdia.Add (go);
+            m_indexPos.Remove(index);
+            m_baiXocdia.Add(go);
         }
 
-        for(int i = 0; i < numWhite; i++) {
+        for (int i = 0; i < numWhite; i++) {
             //Random position
-            int rd = Random.Range (0, this.m_indexPos.Count);
-            int index = this.m_indexPos[rd];
+            int rd = Random.Range(0, m_indexPos.Count);
+            int index = m_indexPos[rd];
 
-            GameObject go = Instantiate (this.xdWhite) as GameObject;
-            go.transform.SetParent (this.m_baixocdia, true);
-            go.transform.position = this.m_pos[index].position;
+            GameObject go = Instantiate(xdWhite) as GameObject;
+            go.transform.SetParent(m_baixocdia, true);
+            go.transform.position = m_pos[index].position;
             go.transform.localScale = Vector3.one;
 
-            this.m_indexPos.Remove (index);
-            this.m_baiXocdia.Add (go);
+            m_indexPos.Remove(index);
+            m_baiXocdia.Add(go);
         }
 
-        this.m_chipRed = numRed;
+        m_chipRed = numRed;
 
         //Clear index
-        ClearIndexPos ();
+        ClearIndexPos();
 
         //Reset data.
-        this.m_double_bet_me = 0;
+        m_double_bet_me = 0;
     }
 
-    public override void onXocdiaNhanCacMucCuoc (long muc1, long muc2, long muc3, long muc4) {
-        if(this.m_cacMucCuoc == null)
+    public override void onXocdiaNhanCacMucCuoc(long muc1, long muc2, long muc3, long muc4) {
+        if (m_cacMucCuoc == null)
             return;
 
-        this.m_cacMucCuoc[0].text = formatMoney (muc1);
-        this.m_cacMucCuoc[1].text = formatMoney (muc2);
-        this.m_cacMucCuoc[2].text = formatMoney (muc3);
-        this.m_cacMucCuoc[3].text = formatMoney (muc4);
+        m_cacMucCuoc[0].text = formatMoney(muc1);
+        m_cacMucCuoc[1].text = formatMoney(muc2);
+        m_cacMucCuoc[2].text = formatMoney(muc3);
+        m_cacMucCuoc[3].text = formatMoney(muc4);
 
         //Set default muc cuoc.
-        this.m_mucCuoc = muc1;
+        m_mucCuoc = muc1;
         //Set default animation muc cuoc.
-        for(int i = 0; i < this.m_mucCuocAnim.Count; i++) {
-            if(i == 0)
-                this.m_mucCuocAnim[i].SetActive (true);
+        for (int i = 0; i < m_mucCuocAnim.Count; i++) {
+            if (i == 0)
+                m_mucCuocAnim[i].SetActive(true);
             else {
-                this.m_mucCuocAnim[i].SetActive (false);
+                m_mucCuocAnim[i].SetActive(false);
             }
         }
     }
 
-    public override void onXocDiaHistory (List<int> aIDs) {
-        if(this.m_lsCount == null) {
-            this.m_lsCount = new List<GameObject> ();
+    public override void onXocDiaHistory(List<int> aIDs) {
+        if (m_lsCount == null) {
+            m_lsCount = new List<GameObject>();
         } else {
-            for(int i = 0; i < this.m_lsCount.Count; i++) {
-                Destroy (this.m_lsCount[i]);
+            for (int i = 0; i < m_lsCount.Count; i++) {
+                Destroy(m_lsCount[i]);
             }
-            this.m_lsCount.Clear ();
+            m_lsCount.Clear();
         }
 
-        if(aIDs == null) {
+        if (aIDs == null) {
             return;
         }
 
@@ -541,25 +541,25 @@ public class XocDia : BaseCasino {
         int jCount = 0;
         int nChan = 0;
         int nLe = 0;
-        for(int i = 0; i < len; i++) {
+        for (int i = 0; i < len; i++) {
             GameObject go;
-            if(aIDs[i] == 0) {
+            if (aIDs[i] == 0) {
                 nChan++;
-                go = Instantiate (this.m_lsTrang) as GameObject;
+                go = Instantiate(m_lsTrang) as GameObject;
             } else {
                 nLe++;
-                go = Instantiate (this.m_lsDo) as GameObject;
+                go = Instantiate(m_lsDo) as GameObject;
             }
 
-            go.transform.SetParent (this.m_bangLichsu, true);
+            go.transform.SetParent(m_bangLichsu, true);
             go.transform.localScale = Vector3.one;
 
-            go.transform.localPosition = new Vector3 (this.m_posLichsu.localPosition.x + iCount * this.m_deltaX,
-                this.m_posLichsu.localPosition.y + jCount * this.m_deltaY,
-                this.m_posLichsu.localPosition.z);
+            go.transform.localPosition = new Vector3(m_posLichsu.localPosition.x + iCount * m_deltaX,
+                 m_posLichsu.localPosition.y + jCount * m_deltaY,
+                 m_posLichsu.localPosition.z);
 
             iCount++;
-            if((iCount % 8) == 0) {
+            if ((iCount % 8) == 0) {
                 {
                     iCount = 0;
                     jCount++;
@@ -568,198 +568,198 @@ public class XocDia : BaseCasino {
 
             //Save total go lich su.
             //We will remove go lich su after function is called again.
-            this.m_lsCount.Add (go);
+            m_lsCount.Add(go);
         }
 
-        if(this.m_nChan != null) {
-            this.m_nChan.text = nChan.ToString ();
+        if (m_nChan != null) {
+            m_nChan.text = nChan.ToString();
         }
 
-        if(this.m_nLe != null) {
-            this.m_nLe.text = nLe.ToString ();
+        if (m_nLe != null) {
+            m_nLe.text = nLe.ToString();
         }
     }
 
-    public void OnClickChangeMucCuoc (UILabel lbMucCuoc, UILabel lbId) {
+    public void OnClickChangeMucCuoc(UILabel lbMucCuoc, UILabel lbId) {
         //Play sound.
-        gameControl.sound.clickBtnAudioXocdia ();
+        gameControl.sound.clickBtnAudioXocdia();
         //Play sound.
 
         string temp = lbMucCuoc.text;
         long muccuoc = 0;
-        if(temp.Contains ("K")) {
-            string sCuoc = temp.Substring (0, temp.Length - 1);
-            if(sCuoc.Contains (",")) {
-                string [] ttt = System.Text.RegularExpressions.Regex.Split (sCuoc, ",");
-                if(ttt.Length == 2) {
-                    int m1 = System.Convert.ToInt32 (ttt[0]);
-                    int m2 = System.Convert.ToInt32 (ttt[1]);
+        if (temp.Contains("K")) {
+            string sCuoc = temp.Substring(0, temp.Length - 1);
+            if (sCuoc.Contains(",")) {
+                string[] ttt = System.Text.RegularExpressions.Regex.Split(sCuoc, ",");
+                if (ttt.Length == 2) {
+                    int m1 = System.Convert.ToInt32(ttt[0]);
+                    int m2 = System.Convert.ToInt32(ttt[1]);
 
                     muccuoc = m1 * 1000 + m2 * 100;
-                } else if(ttt.Length == 3) {
+                } else if (ttt.Length == 3) {
 
                 }
             } else {
-                muccuoc = System.Convert.ToInt32 (sCuoc);
+                muccuoc = System.Convert.ToInt32(sCuoc);
                 muccuoc = muccuoc * 1000;
             }
 
-        } else if(temp.Contains ("M")) {
-            string sCuoc = temp.Substring (0, temp.Length - 1);
-            if(sCuoc.Contains (",")) {
-                string [] ttt = System.Text.RegularExpressions.Regex.Split (sCuoc, ",");
-                if(ttt.Length == 2) {
-                    int m1 = System.Convert.ToInt32 (ttt[0]);
-                    int m2 = System.Convert.ToInt32 (ttt[1]);
+        } else if (temp.Contains("M")) {
+            string sCuoc = temp.Substring(0, temp.Length - 1);
+            if (sCuoc.Contains(",")) {
+                string[] ttt = System.Text.RegularExpressions.Regex.Split(sCuoc, ",");
+                if (ttt.Length == 2) {
+                    int m1 = System.Convert.ToInt32(ttt[0]);
+                    int m2 = System.Convert.ToInt32(ttt[1]);
 
                     muccuoc = m1 * 1000000 + m2 * 100000;
-                } else if(ttt.Length == 3) {
+                } else if (ttt.Length == 3) {
 
                 }
 
             } else {
-                muccuoc = System.Convert.ToInt32 (sCuoc);
+                muccuoc = System.Convert.ToInt32(sCuoc);
                 muccuoc = muccuoc * 1000000;
             }
         } else {
-            muccuoc = System.Convert.ToInt32 (temp);
+            muccuoc = System.Convert.ToInt32(temp);
         }
 
-        this.m_mucCuoc = muccuoc;
+        m_mucCuoc = muccuoc;
 
         //Check button
-        switch(lbId.text) {
+        switch (lbId.text) {
             case "1":
                 //Set chip cuoc
-                //this.m_chipCuoc = this.m_chips[0];
+                // m_chipCuoc =  m_chips[0];
 
                 //Set animation
-                for(int i = 0; i < this.m_mucCuocAnim.Count; i++) {
-                    if(i == 0)
-                        this.m_mucCuocAnim[i].SetActive (true);
+                for (int i = 0; i < m_mucCuocAnim.Count; i++) {
+                    if (i == 0)
+                        m_mucCuocAnim[i].SetActive(true);
                     else {
-                        this.m_mucCuocAnim[i].SetActive (false);
+                        m_mucCuocAnim[i].SetActive(false);
                     }
                 }
                 break;
             case "2":
                 //Set chip cuoc
-                //this.m_chipCuoc = this.m_chips[1];
+                // m_chipCuoc =  m_chips[1];
 
                 //Set animation
-                for(int i = 0; i < this.m_mucCuocAnim.Count; i++) {
-                    if(i == 1)
-                        this.m_mucCuocAnim[i].SetActive (true);
+                for (int i = 0; i < m_mucCuocAnim.Count; i++) {
+                    if (i == 1)
+                        m_mucCuocAnim[i].SetActive(true);
                     else {
-                        this.m_mucCuocAnim[i].SetActive (false);
+                        m_mucCuocAnim[i].SetActive(false);
                     }
                 }
                 break;
             case "3":
                 //Set chip cuoc
-                //this.m_chipCuoc = this.m_chips[2];
+                // m_chipCuoc =  m_chips[2];
 
                 //Set animation
-                for(int i = 0; i < this.m_mucCuocAnim.Count; i++) {
-                    if(i == 2)
-                        this.m_mucCuocAnim[i].SetActive (true);
+                for (int i = 0; i < m_mucCuocAnim.Count; i++) {
+                    if (i == 2)
+                        m_mucCuocAnim[i].SetActive(true);
                     else {
-                        this.m_mucCuocAnim[i].SetActive (false);
+                        m_mucCuocAnim[i].SetActive(false);
                     }
                 }
                 break;
             case "4":
                 //Set chip cuoc
-                //this.m_chipCuoc = this.m_chips[3];
+                // m_chipCuoc =  m_chips[3];
 
                 //Set animation
-                for(int i = 0; i < this.m_mucCuocAnim.Count; i++) {
-                    if(i == 3)
-                        this.m_mucCuocAnim[i].SetActive (true);
+                for (int i = 0; i < m_mucCuocAnim.Count; i++) {
+                    if (i == 3)
+                        m_mucCuocAnim[i].SetActive(true);
                     else {
-                        this.m_mucCuocAnim[i].SetActive (false);
+                        m_mucCuocAnim[i].SetActive(false);
                     }
                 }
                 break;
         }
     }
 
-    public void OnClickDatCuocCua (UILabel lbId) {
-        XocdiaPlayer xocdiaPlayer =  players[0].GetComponent<XocdiaPlayer> ();
-        xocdiaPlayer.DatCuoc (lbId.text, this.m_mucCuoc, this.m_isDatCuocCua);
+    public void OnClickDatCuocCua(UILabel lbId) {
+        XocdiaPlayer xocdiaPlayer = players[0].GetComponent<XocdiaPlayer>();
+        xocdiaPlayer.DatCuoc(lbId.text, m_mucCuoc, m_isDatCuocCua);
     }
 
-    public override void onXocDiaDatcuoc (string nick, sbyte cua, long money, int typeCHIP) {
+    public override void onXocDiaDatcuoc(string nick, sbyte cua, long money, int typeCHIP) {
         //Play sound.
-        gameControl.sound.MoneyAudio ();
+        gameControl.sound.MoneyAudio();
         //Play sound.
 
-        this.m_isBetMe = true;
+        m_isBetMe = true;
 
         XocdiaPlayer xocdiaPlayer = null;
 
-        for(int i = 0; i < players.Length; i++) {
-            if(players[i].getName ().Equals (nick)) {
-                if(xocdiaPlayer == null) {
-                    xocdiaPlayer = players[i].GetComponent<XocdiaPlayer> ();
+        for (int i = 0; i < players.Length; i++) {
+            if (players[i].getName().Equals(nick)) {
+                if (xocdiaPlayer == null) {
+                    xocdiaPlayer = players[i].GetComponent<XocdiaPlayer>();
                 }
-                xocdiaPlayer.ActionChipDatcuoc (cua, typeCHIP);
+                xocdiaPlayer.ActionChipDatcuoc(cua, typeCHIP);
             }
         }
 
-        switch(cua) {
+        switch (cua) {
             case 0:
-                this.m_totalMoney[0] += money;
-                this.m_totalMoneyCuaCuoc[0].text = BaseInfo.formatMoney (this.m_totalMoney[0]);
-                if(BaseInfo.gI ().mainInfo.nick.Equals (nick)) {
-                    this.m_totalMeMoney[0] += money;
-                    this.m_totalMeMoneyCuaCuoc[0].text = BaseInfo.formatMoney (this.m_totalMeMoney[0]);
+                m_totalMoney[0] += money;
+                m_totalMoneyCuaCuoc[0].text = BaseInfo.formatMoney(m_totalMoney[0]);
+                if (BaseInfo.gI().mainInfo.nick.Equals(nick)) {
+                    m_totalMeMoney[0] += money;
+                    m_totalMeMoneyCuaCuoc[0].text = BaseInfo.formatMoney(m_totalMeMoney[0]);
                 }
 
                 //Cache player bet the cua chan
-                this.m_playerCCC.Add (players[getPlayer (nick)]);
+                m_playerCCC.Add(players[getPlayer(nick)]);
                 break;
             case 1:
-                this.m_totalMoney[1] += money;
-                this.m_totalMoneyCuaCuoc[1].text = BaseInfo.formatMoney (this.m_totalMoney[1]);
-                if(BaseInfo.gI ().mainInfo.nick.Equals (nick)) {
-                    this.m_totalMeMoney[1] += money;
-                    this.m_totalMeMoneyCuaCuoc[1].text = BaseInfo.formatMoney (this.m_totalMeMoney[1]);
+                m_totalMoney[1] += money;
+                m_totalMoneyCuaCuoc[1].text = BaseInfo.formatMoney(m_totalMoney[1]);
+                if (BaseInfo.gI().mainInfo.nick.Equals(nick)) {
+                    m_totalMeMoney[1] += money;
+                    m_totalMeMoneyCuaCuoc[1].text = BaseInfo.formatMoney(m_totalMeMoney[1]);
                 }
 
                 //Cache player bet the cua le
-                this.m_playerCCL.Add (players[getPlayer (nick)]);
+                m_playerCCL.Add(players[getPlayer(nick)]);
                 break;
             case 2:
-                this.m_totalMoney[2] += money;
-                this.m_totalMoneyCuaCuoc[2].text = BaseInfo.formatMoney (this.m_totalMoney[2]);
-                if(BaseInfo.gI ().mainInfo.nick.Equals (nick)) {
-                    this.m_totalMeMoney[2] += money;
-                    this.m_totalMeMoneyCuaCuoc[2].text = BaseInfo.formatMoney (this.m_totalMeMoney[2]);
+                m_totalMoney[2] += money;
+                m_totalMoneyCuaCuoc[2].text = BaseInfo.formatMoney(m_totalMoney[2]);
+                if (BaseInfo.gI().mainInfo.nick.Equals(nick)) {
+                    m_totalMeMoney[2] += money;
+                    m_totalMeMoneyCuaCuoc[2].text = BaseInfo.formatMoney(m_totalMeMoney[2]);
                 }
                 break;
             case 3:
-                this.m_totalMoney[3] += money;
-                this.m_totalMoneyCuaCuoc[3].text = BaseInfo.formatMoney (this.m_totalMoney[3]);
-                if(BaseInfo.gI ().mainInfo.nick.Equals (nick)) {
-                    this.m_totalMeMoney[3] += money;
-                    this.m_totalMeMoneyCuaCuoc[3].text = BaseInfo.formatMoney (this.m_totalMeMoney[3]);
+                m_totalMoney[3] += money;
+                m_totalMoneyCuaCuoc[3].text = BaseInfo.formatMoney(m_totalMoney[3]);
+                if (BaseInfo.gI().mainInfo.nick.Equals(nick)) {
+                    m_totalMeMoney[3] += money;
+                    m_totalMeMoneyCuaCuoc[3].text = BaseInfo.formatMoney(m_totalMeMoney[3]);
                 }
                 break;
             case 4:
-                this.m_totalMoney[4] += money;
-                this.m_totalMoneyCuaCuoc[4].text = BaseInfo.formatMoney (this.m_totalMoney[4]);
-                if(BaseInfo.gI ().mainInfo.nick.Equals (nick)) {
-                    this.m_totalMeMoney[4] += money;
-                    this.m_totalMeMoneyCuaCuoc[4].text = BaseInfo.formatMoney (this.m_totalMeMoney[4]);
+                m_totalMoney[4] += money;
+                m_totalMoneyCuaCuoc[4].text = BaseInfo.formatMoney(m_totalMoney[4]);
+                if (BaseInfo.gI().mainInfo.nick.Equals(nick)) {
+                    m_totalMeMoney[4] += money;
+                    m_totalMeMoneyCuaCuoc[4].text = BaseInfo.formatMoney(m_totalMeMoney[4]);
                 }
                 break;
             case 5:
-                this.m_totalMoney[5] += money;
-                this.m_totalMoneyCuaCuoc[5].text = BaseInfo.formatMoney (this.m_totalMoney[5]);
-                if(BaseInfo.gI ().mainInfo.nick.Equals (nick)) {
-                    this.m_totalMeMoney[5] += money;
-                    this.m_totalMeMoneyCuaCuoc[5].text = BaseInfo.formatMoney (this.m_totalMeMoney[5]);
+                m_totalMoney[5] += money;
+                m_totalMoneyCuaCuoc[5].text = BaseInfo.formatMoney(m_totalMoney[5]);
+                if (BaseInfo.gI().mainInfo.nick.Equals(nick)) {
+                    m_totalMeMoney[5] += money;
+                    m_totalMeMoneyCuaCuoc[5].text = BaseInfo.formatMoney(m_totalMeMoney[5]);
                 }
                 break;
             default:
@@ -767,125 +767,125 @@ public class XocDia : BaseCasino {
         }
     }
 
-    public void OnClickBtnDatGapDoi () {
+    public void OnClickBtnDatGapDoi() {
         //Play sound.
-        gameControl.sound.clickBtnAudioXocdia ();
+        gameControl.sound.clickBtnAudioXocdia();
         //Play sound.
 
-        if(this.m_me_master == true) {
+        if (m_me_master == true) {
             return;
         }
 
-        if(this.m_double_bet_me < DOUBLE_BET_MAX && this.m_isBetMe == true) {
-            SendData.onSendDatGapDoi ();
+        if (m_double_bet_me < DOUBLE_BET_MAX && m_isBetMe == true) {
+            SendData.onSendDatGapDoi();
         }
     }
 
-    public void OnClickDatLai () {
+    public void OnClickDatLai() {
         //Play sound.
-        gameControl.sound.clickBtnAudioXocdia ();
+        gameControl.sound.clickBtnAudioXocdia();
         //Play sound.
 
-        if(this.m_isBetPrevious == true && this.m_isBetMeAgain == false) {
-            SendData.onSendDatLai ();
+        if (m_isBetPrevious == true && m_isBetMeAgain == false) {
+            SendData.onSendDatLai();
         }
 
     }
 
-    public void OnClickHuyCuoc () {
-        if(this.m_chipStopMove == false) {
+    public void OnClickHuyCuoc() {
+        if (m_chipStopMove == false) {
             return;
         }
 
         //Play sound.
-        gameControl.sound.clickBtnAudioXocdia ();
+        gameControl.sound.clickBtnAudioXocdia();
         //Play sound.
 
-        if(this.m_isBetMe == true) {
-            SendData.onSendHuyCuoc ();
+        if (m_isBetMe == true) {
+            SendData.onSendHuyCuoc();
         }
     }
 
-    public void OnClickLamCai () {
+    public void OnClickLamCai() {
         //Play sound.
-        gameControl.sound.clickBtnAudioXocdia ();
+        gameControl.sound.clickBtnAudioXocdia();
         //Play sound.
-        //if(this.m_me_master == false) {
-            SendData.onSendLamCai ();
+        //if( m_me_master == false) {
+        SendData.onSendLamCai();
         //}
     }
 
-    public void OnClickHuyChan () {
+    public void OnClickHuyChan() {
         //Play sound.
-        gameControl.sound.clickBtnAudioXocdia ();
+        gameControl.sound.clickBtnAudioXocdia();
         //Play sound.
 
-        SendData.onSendChucNangCai ((byte) 2);
-        if(this.m_me_master)
-            SetEnableButtonTable (false, false, false, false, false, false);
+        SendData.onSendChucNangCai((byte)2);
+        if (m_me_master)
+            SetEnableButtonTable(false, false, false, false, false, false);
     }
 
-    public void OnClickHuyLe () {
+    public void OnClickHuyLe() {
         //Play sound.
-        gameControl.sound.clickBtnAudioXocdia ();
+        gameControl.sound.clickBtnAudioXocdia();
         //Play sound.
 
-        SendData.onSendChucNangCai ((byte) 1);
-        if(this.m_me_master)
-            SetEnableButtonTable (false, false, false, false, false, false);
+        SendData.onSendChucNangCai((byte)1);
+        if (m_me_master)
+            SetEnableButtonTable(false, false, false, false, false, false);
     }
 
-    public override void onXocDiaDatGapdoi (string nick, sbyte socua, Message message) {
+    public override void onXocDiaDatGapdoi(string nick, sbyte socua, Message message) {
         //Play sound.
-        gameControl.sound.MoneyAudio ();
+        gameControl.sound.MoneyAudio();
         //Play sound.
 
-        if(BaseInfo.gI ().mainInfo.nick.Equals (nick)) {
-            this.m_double_bet_me++;
+        if (BaseInfo.gI().mainInfo.nick.Equals(nick)) {
+            m_double_bet_me++;
         }
 
-        if(this.m_double_bet_me >= DOUBLE_BET_MAX) {
+        if (m_double_bet_me >= DOUBLE_BET_MAX) {
             //Disable btnDatX2
-            this.m_btnDatGapDoi.enabled = false;
-            this.m_btnDatGapDoi.defaultColor = new Color (0, 100.0f / 255.0f, 100.0f / 255.0f);
+            m_btnDatGapDoi.enabled = false;
+            m_btnDatGapDoi.defaultColor = new Color(0, 100.0f / 255.0f, 100.0f / 255.0f);
         } else {
             //Enable btnDatx2
-            this.m_btnDatGapDoi.enabled = true;
-            this.m_btnDatGapDoi.defaultColor = new Color (1.0f, 1.0f, 1.0f);
+            m_btnDatGapDoi.enabled = true;
+            m_btnDatGapDoi.defaultColor = new Color(1.0f, 1.0f, 1.0f);
         }
 
         XocdiaPlayer xocdiaPlayer = null;
-        for(int i = 0; i < players.Length; i++) {
-            if(players[i].getName ().Equals (nick)) {
-                xocdiaPlayer = players[i].gameObject.GetComponent<XocdiaPlayer> ();
+        for (int i = 0; i < players.Length; i++) {
+            if (players[i].getName().Equals(nick)) {
+                xocdiaPlayer = players[i].gameObject.GetComponent<XocdiaPlayer>();
             }
         }
 
-        for(int i = 0; i < socua; i++) {
-            sbyte cua = message.reader ().ReadByte ();
-            xocdiaPlayer.ActionChipDatGapDoi (cua);
+        for (int i = 0; i < socua; i++) {
+            sbyte cua = message.reader().ReadByte();
+            xocdiaPlayer.ActionChipDatGapDoi(cua);
             //xocdiaPlayer.CalculateMoneyDoubleBet (cua);
         }
     }
 
-    public override void onXocDiaDatlai (string nick, sbyte socua, Message message) {
+    public override void onXocDiaDatlai(string nick, sbyte socua, Message message) {
         //Play sound.
-        gameControl.sound.MoneyAudio ();
+        gameControl.sound.MoneyAudio();
         //Play sound.
 
-        this.m_isBetMe = true;
-        this.m_isBetMeAgain = true;
+        m_isBetMe = true;
+        m_isBetMeAgain = true;
 
-        for(int i = 0; i < socua; i++) {
-            sbyte cua = message.reader ().ReadByte ();
-            sbyte a = message.reader ().ReadByte ();
-            if(a == 1) {
-                sbyte soloaichip = message.reader ().ReadByte ();
-                for(int j = 0; j < soloaichip; j++) {
-                    sbyte loaichip = message.reader ().ReadByte ();
-                    int sochip = message.reader ().ReadInt ();
-                    for(int k = 0; k < sochip; k++) {
-                        players[getPlayer (nick)].GetComponent<XocdiaPlayer> ().ActionChipDatcuoc (cua, loaichip);
+        for (int i = 0; i < socua; i++) {
+            sbyte cua = message.reader().ReadByte();
+            sbyte a = message.reader().ReadByte();
+            if (a == 1) {
+                sbyte soloaichip = message.reader().ReadByte();
+                for (int j = 0; j < soloaichip; j++) {
+                    sbyte loaichip = message.reader().ReadByte();
+                    int sochip = message.reader().ReadInt();
+                    for (int k = 0; k < sochip; k++) {
+                        players[getPlayer(nick)].GetComponent<XocdiaPlayer>().ActionChipDatcuoc(cua, loaichip);
                     }
                 }
             }
@@ -893,401 +893,401 @@ public class XocDia : BaseCasino {
         //end
     }
 
-    public override void onXocDiaHuycuoc (string nick, long moneycua0, long moneycua1, long moneycua2,
+    public override void onXocDiaHuycuoc(string nick, long moneycua0, long moneycua1, long moneycua2,
     long moneycua3, long moneycua4, long moneycua5) {
-        this.m_isBetMe = false;
-        this.m_isBetMeAgain = false;
-        players[getPlayer (nick)].GetComponent<XocdiaPlayer> ().ActionTraTienCuoc (moneycua0, moneycua1, moneycua2, moneycua3,
+        m_isBetMe = false;
+        m_isBetMeAgain = false;
+        players[getPlayer(nick)].GetComponent<XocdiaPlayer>().ActionTraTienCuoc(moneycua0, moneycua1, moneycua2, moneycua3,
             moneycua4, moneycua5);
     }
 
-    public override void onXocDiaUpdateCua (Message message) {
+    public override void onXocDiaUpdateCua(Message message) {
         try {
-            string nick = message.reader ().ReadUTF ();
-            for(int i = 0; i < 6; i++) {
-                this.m_totalMoney[i] = message.reader ().ReadLong ();
-                this.m_totalMoneyCuaCuoc[i].text = BaseInfo.formatMoney (this.m_totalMoney[i]);
-                if(BaseInfo.gI ().mainInfo.nick.Equals (nick)) {
-                    this.m_totalMeMoney[i] = message.reader ().ReadLong ();
-                    this.m_totalMeMoneyCuaCuoc[i].text = BaseInfo.formatMoney (this.m_totalMeMoney[i]);
+            string nick = message.reader().ReadUTF();
+            for (int i = 0; i < 6; i++) {
+                m_totalMoney[i] = message.reader().ReadLong();
+                m_totalMoneyCuaCuoc[i].text = BaseInfo.formatMoney(m_totalMoney[i]);
+                if (BaseInfo.gI().mainInfo.nick.Equals(nick)) {
+                    m_totalMeMoney[i] = message.reader().ReadLong();
+                    m_totalMeMoneyCuaCuoc[i].text = BaseInfo.formatMoney(m_totalMeMoney[i]);
                 }
             }
-        } catch(System.IO.IOException e) {
-            Debug.LogException (e);
+        } catch (System.IO.IOException e) {
+            Debug.LogException(e);
         }
     }
 
-    public void SetVisibleButtonTable (bool btn1, bool btn2, bool btn3, bool btn4, bool btn5, bool btn6) {
-        if(btn1 == true) {
-            this.m_btnDatGapDoi.gameObject.SetActive (true);
+    public void SetVisibleButtonTable(bool btn1, bool btn2, bool btn3, bool btn4, bool btn5, bool btn6) {
+        if (btn1 == true) {
+            m_btnDatGapDoi.gameObject.SetActive(true);
         } else {
-            this.m_btnDatGapDoi.gameObject.SetActive (false);
+            m_btnDatGapDoi.gameObject.SetActive(false);
         }
 
-        if(btn2 == true) {
-            this.m_btnDatLai.gameObject.SetActive (true);
+        if (btn2 == true) {
+            m_btnDatLai.gameObject.SetActive(true);
         } else {
-            this.m_btnDatLai.gameObject.SetActive (false);
+            m_btnDatLai.gameObject.SetActive(false);
         }
 
-        if(btn3 == true) {
-            this.m_btnHuyCuoc.gameObject.SetActive (true);
+        if (btn3 == true) {
+            m_btnHuyCuoc.gameObject.SetActive(true);
         } else {
-            this.m_btnHuyCuoc.gameObject.SetActive (false);
+            m_btnHuyCuoc.gameObject.SetActive(false);
         }
 
-        if(btn4 == true) {
-            this.m_btnLamCai.gameObject.SetActive (true);
+        if (btn4 == true) {
+            m_btnLamCai.gameObject.SetActive(true);
         } else {
-            this.m_btnLamCai.gameObject.SetActive (false);
+            m_btnLamCai.gameObject.SetActive(false);
         }
 
-        if(btn5 == true) {
-            this.m_btnHuyChan.gameObject.SetActive (true);
+        if (btn5 == true) {
+            m_btnHuyChan.gameObject.SetActive(true);
         } else {
-            this.m_btnHuyChan.gameObject.SetActive (false);
+            m_btnHuyChan.gameObject.SetActive(false);
         }
 
-        if(btn6 == true) {
-            this.m_btnHuyLe.gameObject.SetActive (true);
+        if (btn6 == true) {
+            m_btnHuyLe.gameObject.SetActive(true);
         } else {
-            this.m_btnHuyLe.gameObject.SetActive (false);
-        }
-    }
-
-    public void SetEnableButtonTable (bool btn1, bool btn2, bool btn3, bool btn4, bool btn5, bool btn6) {
-        if(btn1 == true) {
-            this.m_btnDatGapDoi.enabled = true;
-            this.m_btnDatGapDoi.defaultColor = Color.white;
-            this.m_btnDatGapDoiLabel.color = Color.white;
-        } else {
-            this.m_btnDatGapDoi.enabled = false;
-            this.m_btnDatGapDoi.defaultColor = COLOR_DISABLE_BTN;
-            this.m_btnDatGapDoiLabel.color = COLOR_DISABLE_TXT_BTN;
-        }
-
-        if(btn2 == true) {
-            this.m_btnDatLai.enabled = true;
-            this.m_btnDatLai.defaultColor = Color.white;
-            this.m_btnDatLaiLabel.color = Color.white;
-        } else {
-            this.m_btnDatLai.enabled = false;
-            this.m_btnDatLai.defaultColor = COLOR_DISABLE_BTN;
-            this.m_btnDatLaiLabel.color = COLOR_DISABLE_TXT_BTN;
-        }
-
-        if(btn3 == true) {
-            this.m_btnHuyCuoc.enabled = true;
-            this.m_btnHuyCuoc.defaultColor = Color.white;
-            this.m_btnHuyCuocLabel.color = Color.white;
-        } else {
-            this.m_btnHuyCuoc.enabled = false;
-            this.m_btnHuyCuoc.defaultColor = COLOR_DISABLE_BTN;
-            this.m_btnHuyCuocLabel.color = COLOR_DISABLE_TXT_BTN;
-        }
-
-        if(btn4 == true) {
-            this.m_btnLamCai.enabled = true;
-            this.m_btnLamCai.defaultColor = Color.white;
-            this.m_btnLamcaiLabel.color = Color.white;
-        } else {
-            this.m_btnLamCai.enabled = false;
-            this.m_btnLamCai.defaultColor = COLOR_DISABLE_BTN;
-            this.m_btnLamcaiLabel.color = COLOR_DISABLE_TXT_BTN;
-        }
-
-        if(btn5 == true) {
-            this.m_btnHuyChan.enabled = true;
-            this.m_btnHuyChan.defaultColor = Color.white;
-            this.m_btnHuyChanLabel.color = Color.white;
-        } else {
-            this.m_btnHuyChan.enabled = false;
-            this.m_btnHuyChan.defaultColor = COLOR_DISABLE_BTN;
-            this.m_btnHuyChanLabel.color = COLOR_DISABLE_TXT_BTN;
-        }
-
-        if(btn6 == true) {
-            this.m_btnHuyLe.enabled = true;
-            this.m_btnHuyLe.defaultColor = Color.white;
-            this.m_btnHuyLeLabel.color = Color.white;
-        } else {
-            this.m_btnHuyLe.enabled = false;
-            this.m_btnHuyLe.defaultColor = COLOR_DISABLE_BTN;
-            this.m_btnHuyLeLabel.color = COLOR_DISABLE_TXT_BTN;
+            m_btnHuyLe.gameObject.SetActive(false);
         }
     }
 
-    public override void onInfome (Message message) {
-        ClearIndexPos ();
-        ClearBaixocdia ();
+    public void SetEnableButtonTable(bool btn1, bool btn2, bool btn3, bool btn4, bool btn5, bool btn6) {
+        if (btn1 == true) {
+            m_btnDatGapDoi.enabled = true;
+            m_btnDatGapDoi.defaultColor = Color.white;
+            m_btnDatGapDoiLabel.color = Color.white;
+        } else {
+            m_btnDatGapDoi.enabled = false;
+            m_btnDatGapDoi.defaultColor = COLOR_DISABLE_BTN;
+            m_btnDatGapDoiLabel.color = COLOR_DISABLE_TXT_BTN;
+        }
+
+        if (btn2 == true) {
+            m_btnDatLai.enabled = true;
+            m_btnDatLai.defaultColor = Color.white;
+            m_btnDatLaiLabel.color = Color.white;
+        } else {
+            m_btnDatLai.enabled = false;
+            m_btnDatLai.defaultColor = COLOR_DISABLE_BTN;
+            m_btnDatLaiLabel.color = COLOR_DISABLE_TXT_BTN;
+        }
+
+        if (btn3 == true) {
+            m_btnHuyCuoc.enabled = true;
+            m_btnHuyCuoc.defaultColor = Color.white;
+            m_btnHuyCuocLabel.color = Color.white;
+        } else {
+            m_btnHuyCuoc.enabled = false;
+            m_btnHuyCuoc.defaultColor = COLOR_DISABLE_BTN;
+            m_btnHuyCuocLabel.color = COLOR_DISABLE_TXT_BTN;
+        }
+
+        if (btn4 == true) {
+            m_btnLamCai.enabled = true;
+            m_btnLamCai.defaultColor = Color.white;
+            m_btnLamcaiLabel.color = Color.white;
+        } else {
+            m_btnLamCai.enabled = false;
+            m_btnLamCai.defaultColor = COLOR_DISABLE_BTN;
+            m_btnLamcaiLabel.color = COLOR_DISABLE_TXT_BTN;
+        }
+
+        if (btn5 == true) {
+            m_btnHuyChan.enabled = true;
+            m_btnHuyChan.defaultColor = Color.white;
+            m_btnHuyChanLabel.color = Color.white;
+        } else {
+            m_btnHuyChan.enabled = false;
+            m_btnHuyChan.defaultColor = COLOR_DISABLE_BTN;
+            m_btnHuyChanLabel.color = COLOR_DISABLE_TXT_BTN;
+        }
+
+        if (btn6 == true) {
+            m_btnHuyLe.enabled = true;
+            m_btnHuyLe.defaultColor = Color.white;
+            m_btnHuyLeLabel.color = Color.white;
+        } else {
+            m_btnHuyLe.enabled = false;
+            m_btnHuyLe.defaultColor = COLOR_DISABLE_BTN;
+            m_btnHuyLeLabel.color = COLOR_DISABLE_TXT_BTN;
+        }
+    }
+
+    public override void onInfome(Message message) {
+        ClearIndexPos();
+        ClearBaixocdia();
 
         //Reset all time.
-        this.m_timerWaiting.ResetAllTimer ();
-        this.m_winXocdia.RemoveWinXocdia ();
-        for(int i = 0; i < players.Length; i++) {
-            players[i].GetComponent<XocdiaPlayer> ().SetPlayerLose ();
-            players[i].GetComponent<XocdiaPlayer> ().RemoveAllChip ();
+        m_timerWaiting.ResetAllTimer();
+        m_winXocdia.RemoveWinXocdia();
+        for (int i = 0; i < players.Length; i++) {
+            players[i].GetComponent<XocdiaPlayer>().SetPlayerLose();
+            players[i].GetComponent<XocdiaPlayer>().RemoveAllChip();
         }
-        if(this.m_thongbaoXocdia != null) {
-            this.m_thongbaoXocdia.SetAnimationThongbao_Idle ();
+        if (m_thongbaoXocdia != null) {
+            m_thongbaoXocdia.SetAnimationThongbao_Idle();
         }
-        if(this.m_thongbaoXocdia1 != null) {
-            this.m_thongbaoXocdia1.EndFadeIn ();
+        if (m_thongbaoXocdia1 != null) {
+            m_thongbaoXocdia1.EndFadeIn();
         }
-        if(this.m_diaComponent != null) {
-            this.m_diaComponent.SetAnimationXocdiaIdle ();
+        if (m_diaComponent != null) {
+            m_diaComponent.SetAnimationXocdiaIdle();
         }
 
         //--------------------
         //So tien cuoc thong ke
-        if(this.m_totalMoney == null) {
-            this.m_totalMoney = new long[6];
+        if (m_totalMoney == null) {
+            m_totalMoney = new long[6];
         } else {
-            for(int i = 0; i < this.m_totalMoney.Length; i++) {
-                this.m_totalMoney[i] = 0;
+            for (int i = 0; i < m_totalMoney.Length; i++) {
+                m_totalMoney[i] = 0;
             }
         }
 
-        if(this.m_totalMeMoney == null) {
-            this.m_totalMeMoney = new long[6];
+        if (m_totalMeMoney == null) {
+            m_totalMeMoney = new long[6];
         } else {
-            for(int i = 0; i < this.m_totalMeMoney.Length; i++) {
-                this.m_totalMeMoney[i] = 0;
+            for (int i = 0; i < m_totalMeMoney.Length; i++) {
+                m_totalMeMoney[i] = 0;
             }
         }
 
-        for(int i = 0; i < this.m_totalMoneyCuaCuoc.Length; i++) {
-            this.m_totalMoneyCuaCuoc[i].text = "0";
+        for (int i = 0; i < m_totalMoneyCuaCuoc.Length; i++) {
+            m_totalMoneyCuaCuoc[i].text = "0";
         }
 
-        for(int i = 0; i < this.m_totalMeMoneyCuaCuoc.Length; i++) {
-            this.m_totalMeMoneyCuaCuoc[i].text = "0";
+        for (int i = 0; i < m_totalMeMoneyCuaCuoc.Length; i++) {
+            m_totalMeMoneyCuaCuoc[i].text = "0";
         }
         //So tien cuoc thong ke.
         //--------------------
 
-        //this.m_isBetMe = false;
-        //this.m_isBetMeAgain = false;
+        // m_isBetMe = false;
+        // m_isBetMeAgain = false;
 
         try {
-            sbyte status = message.reader ().ReadByte ();
-            int time = message.reader ().ReadInt ();
+            sbyte status = message.reader().ReadByte();
+            int time = message.reader().ReadInt();
 
-            switch(status) {
+            switch (status) {
                 case 1:
                     //Ko cho dat cuoc
-                    this.m_isDatCuocCua = false;
-                    SetEnableButtonTable (false, false, false, false, false, false);
+                    m_isDatCuocCua = false;
+                    SetEnableButtonTable(false, false, false, false, false, false);
 
-                    if(this.m_thongbaoXocdia != null) {
-                        this.m_thongbaoXocdia.SetAnimationThongbao_Xuong ();
-                        this.m_thongbaoXocdia.SetLbThongbao ("Nhà cái bắt đầu xóc");
+                    if (m_thongbaoXocdia != null) {
+                        m_thongbaoXocdia.SetAnimationThongbao_Xuong();
+                        m_thongbaoXocdia.SetLbThongbao("Nhà cái bắt đầu xóc");
                     }
-                    if(this.m_timerWaiting != null) {
-                        this.m_timerWaiting.setTimeAutoStart (0);
-                        this.m_timerWaiting.hideTimeWaiting ();
-                        this.m_timerWaiting.setTimeBeginXocdia (time);
+                    if (m_timerWaiting != null) {
+                        m_timerWaiting.setTimeAutoStart(0);
+                        m_timerWaiting.hideTimeWaiting();
+                        m_timerWaiting.setTimeBeginXocdia(time);
                     }
-                    if(this.m_diaComponent != null) {
-                        this.m_diaComponent.SetAnimationXocdia ();
+                    if (m_diaComponent != null) {
+                        m_diaComponent.SetAnimationXocdia();
                     }
                     break;
                 case 2:
                     //Cho phep dat cuoc
-                    this.m_isDatCuocCua = true;
-                    SetEnableButtonTable (true, true, true, false, true, true);
+                    m_isDatCuocCua = true;
+                    SetEnableButtonTable(true, true, true, false, true, true);
 
-                    if(this.m_thongbaoXocdia != null) {
-                        this.m_thongbaoXocdia.SetLbThongbao ("Đặt cược");
-                        this.m_thongbaoXocdia.SetAnimationThongbao_Xuong ();
+                    if (m_thongbaoXocdia != null) {
+                        m_thongbaoXocdia.SetLbThongbao("Đặt cược");
+                        m_thongbaoXocdia.SetAnimationThongbao_Xuong();
                     }
-                    if(this.m_timerWaiting != null) {
-                        this.m_timerWaiting.setTimeBeginXocdia (0);
-                        this.m_timerWaiting.hideTimeWaiting ();
-                        this.m_timerWaiting.setTimeBeginDatcuoc (time);
+                    if (m_timerWaiting != null) {
+                        m_timerWaiting.setTimeBeginXocdia(0);
+                        m_timerWaiting.hideTimeWaiting();
+                        m_timerWaiting.setTimeBeginDatcuoc(time);
                     }
                     break;
                 case 3:
                     //Ko cho dat cuoc
-                    this.m_isDatCuocCua = false;
-                    SetEnableButtonTable (false, false, false, false, false, false);
+                    m_isDatCuocCua = false;
+                    SetEnableButtonTable(false, false, false, false, false, false);
 
-                    if(this.m_thongbaoXocdia != null) {
-                        this.m_thongbaoXocdia.SetLbThongbao ("Nhà cái ngừng nhận cược");
-                        this.m_thongbaoXocdia.SetAnimationThongbao_Xuong ();
+                    if (m_thongbaoXocdia != null) {
+                        m_thongbaoXocdia.SetLbThongbao("Nhà cái ngừng nhận cược");
+                        m_thongbaoXocdia.SetAnimationThongbao_Xuong();
                     }
-                    if(this.m_timerWaiting != null) {
-                        this.m_timerWaiting.setTimeBeginDatcuoc (0);
-                        this.m_timerWaiting.hideTimeWaiting ();
-                        this.m_timerWaiting.setTimeBeginDungcuoc (time);
+                    if (m_timerWaiting != null) {
+                        m_timerWaiting.setTimeBeginDatcuoc(0);
+                        m_timerWaiting.hideTimeWaiting();
+                        m_timerWaiting.setTimeBeginDungcuoc(time);
                     }
                     break;
             }
-        } catch(System.IO.IOException e) {
-            Debug.LogException (e);
+        } catch (System.IO.IOException e) {
+            Debug.LogException(e);
         }
     }
 
-    public override void onFinishGame (Message message) {
+    public override void onFinishGame(Message message) {
         //Set win
-        if(this.m_winXocdia != null) {
-            this.m_winXocdia.SetWinXocdia (this.m_chipRed, players);
+        if (m_winXocdia != null) {
+            m_winXocdia.SetWinXocdia(m_chipRed, players);
         }
 
         //Clear player data
-        if(this.m_playerCCC != null) {
-            this.m_playerCCC.Clear ();
+        if (m_playerCCC != null) {
+            m_playerCCC.Clear();
         }
 
-        if(this.m_playerCCL != null) {
-            this.m_playerCCL.Clear ();
+        if (m_playerCCL != null) {
+            m_playerCCL.Clear();
         }
 
         //Kiem tra xem van truoc co dat cuoc ko?
-        if(this.m_isBetMe == true) {
-            this.m_isBetPrevious = true;
+        if (m_isBetMe == true) {
+            m_isBetPrevious = true;
         } else {
-            this.m_isBetPrevious = false;
+            m_isBetPrevious = false;
         }
 
         try {
-            int cua1 = message.reader ().ReadByte ();
-            int cua2 = message.reader ().ReadByte ();
+            int cua1 = message.reader().ReadByte();
+            int cua2 = message.reader().ReadByte();
             //set_anim_cuato (cua1);
             //set_anim_cuanho (cua2);
 
-            int size = message.reader ().ReadByte ();
-            for(int i = 0; i < size; i++) {
-                string name = message.reader ().ReadUTF ();
-                long moneyEarn = message.reader ().ReadLong ();
-                if(moneyEarn > 0) {
-                    players[getPlayer (name)].GetComponent<XocdiaPlayer> ().SetPlayerWin ();
+            int size = message.reader().ReadByte();
+            for (int i = 0; i < size; i++) {
+                string name = message.reader().ReadUTF();
+                long moneyEarn = message.reader().ReadLong();
+                if (moneyEarn > 0) {
+                    players[getPlayer(name)].GetComponent<XocdiaPlayer>().SetPlayerWin();
                     //Play sound.
-                    gameControl.sound.startWinAudioXocdia ();
+                    gameControl.sound.startWinAudioXocdia();
                     //Play sound.
                 } else {
-                    if(moneyEarn < 0) {
+                    if (moneyEarn < 0) {
                         //Play sound.
-                        gameControl.sound.startLoseAudioXocdia ();
+                        gameControl.sound.startLoseAudioXocdia();
                         //Play sound.
                     }
 
-                    players[getPlayer (name)].GetComponent<XocdiaPlayer> ().SetPlayerLose ();
+                    players[getPlayer(name)].GetComponent<XocdiaPlayer>().SetPlayerLose();
                 }
             }
-        } catch(System.IO.IOException e) {
-            Debug.LogException (e);
+        } catch (System.IO.IOException e) {
+            Debug.LogException(e);
         }
     }
 
-    public override void onXocDiaChucNangHuycua (Message message) {
+    public override void onXocDiaChucNangHuycua(Message message) {
         try {
-            sbyte type = message.reader ().ReadByte ();
-            switch(type) {
+            sbyte type = message.reader().ReadByte();
+            switch (type) {
                 case 1://Huy cua le.
-                    if(this.m_thongbaoXocdia1 != null) {
-                        this.m_thongbaoXocdia1.SetLbThongbao ("Nhà cái hủy của lẻ");
-                        this.m_thongbaoXocdia1.ShowThongbao1 ();
+                    if (m_thongbaoXocdia1 != null) {
+                        m_thongbaoXocdia1.SetLbThongbao("Nhà cái hủy của lẻ");
+                        m_thongbaoXocdia1.ShowThongbao1();
                     }
 
                     //Action tra tien player da cuoc
-                    if(this.m_playerCCL != null && this.m_playerCCL.Count > 0) {
-                        for(int i = 0; i < this.m_playerCCL.Count; i++) {
-                            this.m_playerCCL[i].GetComponent<XocdiaPlayer> ().ActionTraTienCuoc (-1, 1, -1, -1, -1, -1);
+                    if (m_playerCCL != null && m_playerCCL.Count > 0) {
+                        for (int i = 0; i < m_playerCCL.Count; i++) {
+                            m_playerCCL[i].GetComponent<XocdiaPlayer>().ActionTraTienCuoc(-1, 1, -1, -1, -1, -1);
                         }
                     }
 
                     //Reset tien.
-                    this.m_totalMoney[1] = 0;
-                    this.m_totalMoneyCuaCuoc[1].text = BaseInfo.formatMoney (this.m_totalMoney[1]);
-                    this.m_totalMeMoney[1] = 0;
-                    this.m_totalMeMoneyCuaCuoc[1].text = BaseInfo.formatMoney (this.m_totalMeMoney[1]);
+                    m_totalMoney[1] = 0;
+                    m_totalMoneyCuaCuoc[1].text = BaseInfo.formatMoney(m_totalMoney[1]);
+                    m_totalMeMoney[1] = 0;
+                    m_totalMeMoneyCuaCuoc[1].text = BaseInfo.formatMoney(m_totalMeMoney[1]);
 
                     break;
                 case 2://Huy cua chan.
-                    if(this.m_thongbaoXocdia1 != null) {
-                        this.m_thongbaoXocdia1.SetLbThongbao ("Nhà cái hủy của chẵn");
-                        this.m_thongbaoXocdia1.ShowThongbao1 ();
+                    if (m_thongbaoXocdia1 != null) {
+                        m_thongbaoXocdia1.SetLbThongbao("Nhà cái hủy của chẵn");
+                        m_thongbaoXocdia1.ShowThongbao1();
                     }
 
                     //Action tra tien player da cuoc
-                    if(this.m_playerCCC != null && this.m_playerCCC.Count > 0) {
-                        for(int i = 0; i < this.m_playerCCC.Count; i++) {
-                            this.m_playerCCC[i].GetComponent<XocdiaPlayer> ().ActionTraTienCuoc (1, -1, -1, -1, -1, -1);
+                    if (m_playerCCC != null && m_playerCCC.Count > 0) {
+                        for (int i = 0; i < m_playerCCC.Count; i++) {
+                            m_playerCCC[i].GetComponent<XocdiaPlayer>().ActionTraTienCuoc(1, -1, -1, -1, -1, -1);
                         }
                     }
 
                     //Reset tien.
-                    this.m_totalMoney[0] = 0;
-                    this.m_totalMoneyCuaCuoc[0].text = BaseInfo.formatMoney (this.m_totalMoney[0]);
-                    this.m_totalMeMoney[0] = 0;
-                    this.m_totalMeMoneyCuaCuoc[0].text = BaseInfo.formatMoney (this.m_totalMeMoney[0]);
+                    m_totalMoney[0] = 0;
+                    m_totalMoneyCuaCuoc[0].text = BaseInfo.formatMoney(m_totalMoney[0]);
+                    m_totalMeMoney[0] = 0;
+                    m_totalMeMoneyCuaCuoc[0].text = BaseInfo.formatMoney(m_totalMeMoney[0]);
 
                     break;
             }
-        } catch(System.IO.IOException e) {
-            Debug.LogException (e);
+        } catch (System.IO.IOException e) {
+            Debug.LogException(e);
         }
     }
 
-    public override void onXocDiaBeginTimerDungCuoc (Message message) {
-        SetEnableButtonTable (false, false, false, false, true, true);
+    public override void onXocDiaBeginTimerDungCuoc(Message message) {
+        SetEnableButtonTable(false, false, false, false, true, true);
         try {
-            int time = message.reader ().ReadByte ();
-            if(time > 1) {
-                if(this.m_thongbaoXocdia != null) {
-                    this.m_thongbaoXocdia.SetLbThongbao ("Nhà cái ngừng nhận cược");
-                    this.m_thongbaoXocdia.SetAnimationThongbao_Xuong ();
+            int time = message.reader().ReadByte();
+            if (time > 1) {
+                if (m_thongbaoXocdia != null) {
+                    m_thongbaoXocdia.SetLbThongbao("Nhà cái ngừng nhận cược");
+                    m_thongbaoXocdia.SetAnimationThongbao_Xuong();
                 }
-                if(this.m_timerWaiting != null) {
-                    this.m_timerWaiting.setTimeBeginDatcuoc (0);
-                    this.m_timerWaiting.hideTimeWaiting ();
-                    this.m_timerWaiting.setTimeBeginDungcuoc (time);
+                if (m_timerWaiting != null) {
+                    m_timerWaiting.setTimeBeginDatcuoc(0);
+                    m_timerWaiting.hideTimeWaiting();
+                    m_timerWaiting.setTimeBeginDungcuoc(time);
                 }
             }
-        } catch(System.IO.IOException e) {
-            Debug.LogException (e);
+        } catch (System.IO.IOException e) {
+            Debug.LogException(e);
         }
     }
 
-    public static string formatMoney (long money) {
+    public static string formatMoney(long money) {
         string strMoney = "";
 
         try {
-            if(money < 0) {
+            if (money < 0) {
                 money = 0;
             }
             // strMoney.delete(0, strMoney.length());
-            long strm = (long) (money / 1000000);
+            long strm = (long)(money / 1000000);
             long strk = 0;
             long strh = 0;
-            if(strm > 0) {
-                strk = (long) ((money % 1000000) / 1000);
-                long sss = (long) strk / 100;
-                if(strk > 100) {
+            if (strm > 0) {
+                strk = (long)((money % 1000000) / 1000);
+                long sss = (long)strk / 100;
+                if (strk > 100) {
                     strMoney = strm + "," + sss + "M";
-                } else if(strMoney.Length > 0) {
+                } else if (strMoney.Length > 0) {
                     strMoney = strm + "," + "0" + strk + "M";
                 }
 
             } else {
-                strk = (long) (money / 1000);
-                if(strk > 0) {
+                strk = (long)(money / 1000);
+                if (strk > 0) {
                     strh = (money % 1000 / 100);
-                    if(strh > 0) {
+                    if (strh > 0) {
                         strMoney = strk + "," + strh + "K";
-                    } else if(strMoney.Length >= 0) {
+                    } else if (strMoney.Length >= 0) {
                         strMoney = strk + "K";
                     }
 
-                } else if(strMoney.Length >= 0) {
+                } else if (strMoney.Length >= 0) {
                     strMoney = money + "";
                 }
             }
-        } catch(System.Exception e) {
-            Debug.LogException (e);
+        } catch (System.Exception e) {
+            Debug.LogException(e);
 
         }
-        return strMoney.ToString ();
+        return strMoney.ToString();
     }
 }

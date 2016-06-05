@@ -20,6 +20,7 @@ public class BaseInfo {
 
     public string SMS_CHANGE_PASS_SYNTAX;
     public string SMS_CHANGE_PASS_NUMBER;
+
     public sbyte isDoiThuong = 0;// disable, 1: enable
 
     public int idRoom = 1;
@@ -49,7 +50,8 @@ public class BaseInfo {
     public int sms10 = 0, sms15 = 0;
     public int tyle_xu_sang_chip = 0, tyle_chip_sang_xu = 0;
     public List<TyGia> list_tygia = new List<TyGia> ();
-    public bool isCharging = false;
+    public int isCharging = 10;
+    
 
     public bool tuDongRutTien = false;
     public long soTienRut;
@@ -64,7 +66,6 @@ public class BaseInfo {
     public bool rung = true;
     public bool isNhanLoiMoiChoi = true;
     public int typetableLogin = Res.ROOMFREE;
-
     public bool tudongsansang = true;
     //public List<MessInfo> allMess = new List<MessInfo>();
     //public List<GiftInfo> giftTheCao = new List<GiftInfo>();

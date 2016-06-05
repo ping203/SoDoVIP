@@ -3,51 +3,91 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PanelNapChuyenXu : PanelGame {
-    public PanelSMS9029 panelSMS;
-    public UIToggle tgTheCao;
-    public List<Item9029> list_viettel = new List<Item9029> ();
-    public List<Item9029> list_vina = new List<Item9029> ();
-    public List<Item9029> list_mobi = new List<Item9029> ();
+    public UIToggle tgTheCao, tgSMS;
+    public List<Item9029> list_viettel = new List<Item9029>();
+    public List<Item9029> list_vina = new List<Item9029>();
+    public List<Item9029> list_mobi = new List<Item9029>();
     //public GameObject panelTheCao;
-	public PanelTheCao panelTheCao;
+    //public GameObject panelTheCao;
+    //public GameObject panelSms;
+    // public PanelSMS9029 panelSMS;
     // Use this for initialization
-    void Start () {
-		//panelTheCao.onShow ();
+    void Start() {
+        //panelTheCao.onShow ();
+        Debug.Log("999999999999999999999999999 : " + BaseInfo.gI().isCharging);
+        setEnableToggle();
     }
 
+    //TAB_THE_CAO = 0, TAB_SMS = 1, TAB_SMS9029 = 2, TAB_IAP = 3;
+    void OnEnable() {
 
-    public void clickTabDoiChip () {
-        if(BaseInfo.gI ().mainInfo.moneyXu <= 0) {
+        setEnableToggle();
+    }
+
+    void setEnableToggle() {
+        if (BaseInfo.gI().isCharging == 3 || BaseInfo.gI().isCharging == 5) {
+            tgTheCao.gameObject.SetActive(false);
+        } else {
+            tgTheCao.gameObject.SetActive(true);
             tgTheCao.value = true;
-            GameControl.instance.panelThongBao.onShow ("Bạn không còn " + Res.MONEY_VIP + " để đổi!", delegate {
+        }
+        if (BaseInfo.gI().isCharging == 0 || BaseInfo.gI().isCharging == 5) {
+            tgSMS.gameObject.SetActive(false);
+        } else {
+            tgSMS.gameObject.SetActive(true);
+            tgSMS.value = false;
+        }
+    }
+
+    //public void clickTab(string name) {
+    //    panelTheCao.onHide();
+    //    panelSms.onHide();
+    //    tgTheCao.value = false;
+    //    tgSMS.value = false;
+    //    switch (name) {
+    //        case "ToggleTheCao":
+    //            panelTheCao.onShow();
+    //            tgTheCao.value = true;
+    //            break;
+    //        case "ToggleSMS":
+    //            panelSms.onShow();
+    //            tgSMS.value = true;
+    //            break;
+    //    }
+    //}
+
+    public void clickTabDoiChip() {
+        if (BaseInfo.gI().mainInfo.moneyXu <= 0) {
+            tgTheCao.value = true;
+            GameControl.instance.panelThongBao.onShow("Bạn không còn " + Res.MONEY_VIP + " để đổi!", delegate {
             });
         }
     }
 
-    public void clickTabDoiXu () {
-        if(BaseInfo.gI ().mainInfo.moneyChip <= 0) {
+    public void clickTabDoiXu() {
+        if (BaseInfo.gI().mainInfo.moneyChip <= 0) {
             tgTheCao.value = true;
-            GameControl.instance.panelThongBao.onShow ("Bạn không còn " + Res.MONEY_FREE + " để đổi!", delegate {
+            GameControl.instance.panelThongBao.onShow("Bạn không còn " + Res.MONEY_FREE + " để đổi!", delegate {
             });
         }
     }
 
-    public void clickTabChuyenXu () {
-        if(BaseInfo.gI ().mainInfo.moneyXu <= 0) {
+    public void clickTabChuyenXu() {
+        if (BaseInfo.gI().mainInfo.moneyXu <= 0) {
             tgTheCao.value = true;
-            GameControl.instance.panelThongBao.onShow ("Bạn không còn " + Res.MONEY_VIP + " để chuyển!", delegate {
+            GameControl.instance.panelThongBao.onShow("Bạn không còn " + Res.MONEY_VIP + " để chuyển!", delegate {
             });
         }
     }
 
-    public void initPanelViettel () {
-       // panelSMS.add9022 (list_viettel, 0);
+    public void initPanelViettel() {
+        // panelSMS.add9022 (list_viettel, 0);
     }
-    public void initPanelVina () {
-      //  panelSMS.add9022 (list_vina, 1);
+    public void initPanelVina() {
+        //  panelSMS.add9022 (list_vina, 1);
     }
-    public void initPanelMobi () {
-      //  panelSMS.add9022 (list_mobi, 2);
+    public void initPanelMobi() {
+        //  panelSMS.add9022 (list_mobi, 2);
     }
     /*
     public void clickSMS9029(){

@@ -39,7 +39,7 @@ public class HasMasterCasino : BaseCasino {
         if (BaseInfo.gI().isView) {
             disableAllBtnTable();
         }
-        if(isPlaying) {
+        if (isPlaying) {
             lb_Btn_sansang.text = Res.TXT_XINCHO;
         } else {
             lb_Btn_sansang.text = Res.TXT_SANSANG;
@@ -58,8 +58,7 @@ public class HasMasterCasino : BaseCasino {
             btn_sansang.gameObject.SetActive(false);
             btn_datcuoc.gameObject.SetActive(true);
             toggleLock.gameObject.SetActive(true);
-        }
-        else {
+        } else {
             btn_batdau.gameObject.SetActive(false);
             btn_sansang.gameObject.SetActive(true);
             btn_datcuoc.gameObject.SetActive(false);
@@ -67,11 +66,16 @@ public class HasMasterCasino : BaseCasino {
         }
         if (isPlaying) {
             lb_Btn_sansang.text = Res.TXT_XINCHO;
-        }
-        else {
+        } else {
             lb_Btn_sansang.text = Res.TXT_SANSANG;
         }
 
+        if (!dangkyroiban && BaseInfo.gI().tudongsansang
+                && (gameControl.currenStage == gameControl.tlmn || gameControl.currenStage == gameControl.phom || gameControl.currenStage == gameControl.xam)
+                && !BaseInfo.gI().mainInfo.nick.Equals(masterID)) {
+            btn_sansang.gameObject.SetActive(false);
+            SendData.onReady(1);
+        }
     }
 
     public override void setMasterSecond(string master) {
@@ -82,14 +86,12 @@ public class HasMasterCasino : BaseCasino {
                 btn_datcuoc.gameObject.SetActive(true);
                 //groupKhoa.gameObject.SetActive(false);
                 toggleLock.gameObject.SetActive(false);
-            }
-            else {
+            } else {
                 btn_batdau.gameObject.SetActive(false);
                 btn_datcuoc.gameObject.SetActive(false);
                 if (players[0].isReady()) {
                     btn_sansang.gameObject.SetActive(false);
-                }
-                else {
+                } else {
                     btn_sansang.gameObject.SetActive(true);
                 }
 
@@ -98,8 +100,7 @@ public class HasMasterCasino : BaseCasino {
 
         if (master.Equals(BaseInfo.gI().mainInfo.nick)) {
             toggleLock.gameObject.SetActive(true);
-        }
-        else {
+        } else {
             toggleLock.gameObject.SetActive(false);
         }
 
@@ -112,12 +113,26 @@ public class HasMasterCasino : BaseCasino {
         for (int i = 0; i < nUsers; i++) {
             if (!players[i].isSit()) {
                 players[i].setInvite(true);
-            }
-            else {
+            } else {
                 players[i].setInvite(false);
             }
         }
     }
+    void OnEnable() {
+        dangkyroiban = false;
+    }
+    private bool dangkyroiban = false;
+
+    void onFinishGame(Message message) {
+        base.onFinishGame(message);
+        if (!dangkyroiban && BaseInfo.gI().tudongsansang
+                && (gameControl.currenStage == gameControl.tlmn || gameControl.currenStage == gameControl.phom || gameControl.currenStage == gameControl.xam)
+                && !BaseInfo.gI().mainInfo.nick.Equals(masterID)) {
+            btn_sansang.gameObject.SetActive(false);
+            SendData.onReady(1);
+        }
+    }
+
     public void clickReady() {
         SendData.onReady(1);// san sang
         btn_sansang.gameObject.SetActive(false);
@@ -132,21 +147,19 @@ public class HasMasterCasino : BaseCasino {
             if (getTotalPlayerReady() < getTotalPlayer()) {
                 gameControl.panelYesNo
                         .onShow("Còn người chưa sẳn sàng,\nBạn có muốn bắt đầu không?", delegate {
-                    btn_batdau.gameObject.SetActive(false);
-                    SendData.onStartGame();
-                    for (int i = 0; i < nUsers; i++) {
-                        players[i].setVisibleRank(false);
-                    }
-                });
-            }
-            else {
+                            btn_batdau.gameObject.SetActive(false);
+                            SendData.onStartGame();
+                            for (int i = 0; i < nUsers; i++) {
+                                players[i].setVisibleRank(false);
+                            }
+                        });
+            } else {
                 SendData.onStartGame();
                 btn_batdau.gameObject.SetActive(false);
                 btn_datcuoc.gameObject.SetActive(false);
             }
 
-        }
-        else {
+        } else {
             gameControl.toast.showToast("Chưa đủ người chơi!");
         }
 

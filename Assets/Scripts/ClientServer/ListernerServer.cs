@@ -50,7 +50,7 @@ public class ListernerServer : IChatListener {
             string link = msg.reader().ReadUTF();
             BaseInfo.gI().SMS_CHANGE_PASS_SYNTAX = msg.reader().ReadUTF();
             BaseInfo.gI().SMS_CHANGE_PASS_NUMBER = msg.reader().ReadUTF();
-            sbyte doithuong = msg.reader().ReadByte();
+            BaseInfo.gI().isDoiThuong = msg.reader().ReadByte();
         } catch (Exception ex) {
             Debug.LogException(ex);
         }
@@ -865,8 +865,8 @@ public class ListernerServer : IChatListener {
     public void onInfoSMS(Message message) {
         try {
             sbyte len = message.reader().ReadByte();
-            //			BaseInfo.gI().isCharging = len;
-
+            BaseInfo.gI().isCharging = len;
+            Debug.Log("ccccccccccccccc " + len);
             for (int i = 0; i < 2; i++) {
                 string name = message.reader().ReadUTF();
                 string syntax = message.reader().ReadUTF();
@@ -2138,7 +2138,7 @@ public class ListernerServer : IChatListener {
             int size = message.reader().ReadShort();
             for (int i = 0; i < size; i++) {
                 LichSuGiaoDich lichSuGiaoDich = new LichSuGiaoDich();
-                lichSuGiaoDich.stt = (i+1);
+                lichSuGiaoDich.stt = (i + 1);
                 lichSuGiaoDich.tenvatpham = message.reader().ReadUTF();
                 sbyte tt = message.reader().ReadByte();
                 lichSuGiaoDich.thoigiangiaodich = message.reader().ReadUTF();
